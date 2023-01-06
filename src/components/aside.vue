@@ -10,24 +10,24 @@
       <template v-slot>
         <transition mode="out-in">
           <div class="aside-list-close" v-if="!show">
-            <div
-              class="like"
-              :class="{ heightLight: $route.fullPath == '/user/like' }"
-            >
-              <RouterLink to="/user/like">
+            <RouterLink to="/user/like">
+              <div
+                class="like"
+                :class="{ heightLight: $route.fullPath == '/user/like' }"
+              >
                 <span class="iconfont icon-jushoucanggift"></span>
                 <span class="text">喜欢</span>
-              </RouterLink>
-            </div>
-            <div
-              class="like"
-              :class="{ heightLight: $route.fullPath == '/user/played' }"
-            >
-              <RouterLink to="/user/played">
+              </div>
+            </RouterLink>
+            <RouterLink to="/user/played">
+              <div
+                class="like"
+                :class="{ heightLight: $route.fullPath == '/user/played' }"
+              >
                 <span class="iconfont icon-yinle"></span>
                 <span class="text">播放</span>
-              </RouterLink>
-            </div>
+              </div>
+            </RouterLink>
             <!-- <div
               class="like"
               :class="{ heightLight: $route.fullPath == '/user/songlist' }"
@@ -37,36 +37,36 @@
                 <span class="text">歌单</span>
               </RouterLink>
             </div> -->
-            <div
-              class="like"
-              :class="{ heightLight: $route.fullPath == '/set' }"
-            >
-              <RouterLink to="/set">
+            <RouterLink to="/set">
+              <div
+                class="like"
+                :class="{ heightLight: $route.fullPath == '/set' }"
+              >
                 <span class="iconfont icon-shezhi"></span>
                 <span class="text">设置</span>
-              </RouterLink>
-            </div>
+              </div>
+            </RouterLink>
           </div>
           <div class="aside-list-open" v-else>
             <h4>我的音乐</h4>
-            <div
-              class="like"
-              :class="{ heightLight: $route.fullPath == '/user/like' }"
-            >
-              <RouterLink to="/user/like">
+            <RouterLink to="/user/like">
+              <div
+                class="like"
+                :class="{ heightLight: $route.fullPath == '/user/like' }"
+              >
                 <span class="iconfont icon-jushoucanggift"></span>
                 <span class="text">我的喜欢</span>
-              </RouterLink>
-            </div>
-            <div
-              class="like"
-              :class="{ heightLight: $route.fullPath == '/user/played' }"
-            >
-              <RouterLink to="/user/played">
+              </div>
+            </RouterLink>
+            <RouterLink to="/user/played">
+              <div
+                class="like"
+                :class="{ heightLight: $route.fullPath == '/user/played' }"
+              >
                 <span class="iconfont icon-yinle"></span>
                 <span class="text">最近播放</span>
-              </RouterLink>
-            </div>
+              </div>
+            </RouterLink>
             <!-- <div
               class="like"
               :class="{ heightLight: $route.fullPath == '/user/songlist' }"
@@ -76,15 +76,15 @@
                 <span class="text">我收藏的歌单</span>
               </RouterLink>
             </div> -->
-            <div
-              class="like"
-              :class="{ heightLight: $route.fullPath == '/set' }"
-            >
-              <RouterLink to="/set">
+            <RouterLink to="/set">
+              <div
+                class="like"
+                :class="{ heightLight: $route.fullPath == '/set' }"
+              >
                 <span class="iconfont icon-shezhi"></span>
                 <span class="text">设置</span>
-              </RouterLink>
-            </div>
+              </div>
+            </RouterLink>
           </div>
         </transition>
       </template>
@@ -135,30 +135,23 @@ export default {
       font-size: 12px;
       padding: 20px 0;
       color: @primaryTextColor;
+      display: flex;
+      flex-direction: column;
       cursor: pointer;
       transition: all 0.2s;
+      span {
+        font-size: 17px;
+      }
 
+      .text {
+        font-size: 14px;
+      }
       &.heightLight {
         background-color: @highlightColor;
       }
 
       &:hover {
         background-color: @highlightColor;
-      }
-
-      a {
-        display: flex;
-        flex-direction: column;
-        font-size: 14px;
-        color: @primaryTextColor;
-
-        span {
-          font-size: 17px;
-        }
-
-        .text {
-          font-size: 14px;
-        }
       }
     }
   }
@@ -180,7 +173,8 @@ export default {
       border-radius: 5px;
       overflow: hidden;
       cursor: pointer;
-
+      display: flex;
+      align-items: center;
       &.heightLight {
         background-color: @highlightColor;
       }
@@ -189,20 +183,13 @@ export default {
         background-color: @highlightColor;
       }
 
-      a {
+      span {
+        margin-right: 5px;
+        font-size: 17px;
+      }
+
+      .text {
         font-size: 14px;
-        color: @primaryTextColor;
-        display: flex;
-        align-items: center;
-
-        span {
-          margin-right: 5px;
-          font-size: 17px;
-        }
-
-        .text {
-          font-size: 14px;
-        }
       }
     }
   }

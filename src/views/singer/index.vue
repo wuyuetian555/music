@@ -159,7 +159,7 @@ export default {
   .artist-tabs {
     padding: @primaryPadding;
     transition: all 0.3s;
-    box-shadow: 0px 2px 2px 1px @primaryTextColor;
+    box-shadow: 0px 5px 10px 1px @primaryTextColor;
     &.showTopNav {
       position: sticky;
       top: -216px;
