@@ -157,15 +157,16 @@ export default {
 .artist {
   color: @primaryTextColor;
   .artist-tabs {
-    background-color: @primaryColor;
     padding: @primaryPadding;
     transition: all 0.3s;
+    box-shadow: 0px 2px 2px 1px @primaryTextColor;
     &.showTopNav {
       position: sticky;
       top: -216px;
       transform: translateY(216px);
       background-color: @topColor;
       z-index: 1;
+      box-shadow: none;
     }
     > div {
       display: block;
