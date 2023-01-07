@@ -19,11 +19,15 @@
           <div class="lyric-list-item" ref="scrollList">
             <div
               v-for="(item, index) in songLyric"
-              :key="item.index"
+              :key="index"
               class="lyric-wrap"
-              :class="{ active: lyricindex == index }"
+              :class="{
+                active: lyricindex == index,
+                'tlyric-wrap': startIndex == 8,
+              }"
             >
-              {{ item.lyric }}
+              <span> {{ item.lyric }}</span>
+              <span v-if="songTlyric"> {{ songTlyric[item.time] }}</span>
             </div>
           </div>
         </div>
@@ -52,9 +56,12 @@ export default {
     const data = reactive({
       musicInfo: store.getters["musicplay/getPlayingMusic"],
       songLyric: "",
+      songTlyric: "",
       scrollList: "",
       lyricindex: 0,
       currentTime: 0,
+      startIndex: 8,
+      scrollHeight: 32,
     });
 
     const hide = () => {
@@ -64,15 +71,25 @@ export default {
       () => store.getters["musicplay/getPlayingMusic"].musicId,
       (newVal) => {
         if (!newVal) return;
-        findMusicLyric(newVal).then((res) => {
-          let lyric = res.lrc.lyric;
-          data.songLyric = useSongLyric(lyric);
+        findMusicLyric(newVal).then(({ lrc, tlyric }) => {
+          const { result, tResult } = useSongLyric({
+            lyric: lrc.lyric,
+            tlyric: tlyric.lyric,
+          });
+          data.songTlyric = tResult;
+          data.songLyric = result;
+          if (tResult) {
+            data.startIndex = 4;
+            data.scrollHeight = 64;
+          } else {
+            data.startIndex = 8;
+            data.scrollHeight = 32;
+          }
         });
       },
       { immediate: true }
     );
 
-    ///////
     function timeupdate() {
       let timer;
       return function () {
@@ -84,17 +101,20 @@ export default {
             let curTime = audio.currentTime;
             data.currentTime = audio.currentTime;
             for (var i = 0; i < length; i++) {
-              if (songLyric[length - 1].time < curTime) {
+              if (songLyric[length - 1].initTime < curTime) {
                 data.lyricindex = length - 1;
                 break;
               } else if (
-                songLyric[i].time < curTime &&
-                songLyric[i + 1].time > curTime
+                songLyric[i].initTime < curTime &&
+                songLyric[i + 1].initTime > curTime
               ) {
                 data.lyricindex = i;
                 if (data.scrollList) {
                   data.scrollList.scrollTop =
-                    data.lyricindex >= 8 ? (data.lyricindex - 7) * 32 : 0;
+                    data.lyricindex >= data.startIndex
+                      ? (data.lyricindex - data.startIndex + 1) *
+                        data.scrollHeight
+                      : 0;
                 }
                 break;
               }
@@ -187,9 +207,7 @@ export default {
       }
 
       .lyric-list {
-        height: 600px;
         overflow: auto;
-        line-height: 32px;
         width: 600px;
         margin: 0 auto;
         text-align: center;
@@ -204,10 +222,18 @@ export default {
           transition: 0.5s;
 
           .lyric-wrap {
+            height: 64px;
+            line-height: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             &.active {
               color: hsl(184, 100%, 50%);
               font-size: 19px;
             }
+          }
+          .tlyric-wrap {
+            height: 32px !important;
           }
         }
       }
