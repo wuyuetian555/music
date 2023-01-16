@@ -30,9 +30,7 @@
           >
         </div>
       </div>
-      <div class="music-control">
-        <control></control>
-      </div>
+      <control></control>
       <musicTime
         :filtercurrentTime="filtercurrentTime"
         :duration="duration"
@@ -191,31 +189,6 @@ export default {
         span {
           color: @primaryTextColor;
         }
-      }
-    }
-
-    .music-time {
-      color: @primaryTextColor;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      flex: 1;
-      justify-content: flex-end;
-
-      .lyric {
-        font-size: 22px;
-        margin-right: 20px;
-      }
-
-      .musicList {
-        margin-left: 15px;
-        font-size: 25px;
-      }
-
-      .songCount {
-        font-size: 17px;
-        display: inline-block;
-        width: 50px;
       }
     }
   }

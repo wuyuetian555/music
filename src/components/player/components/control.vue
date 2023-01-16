@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { computed, onBeforeMount, ref, watch } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
 import { useStore } from "vuex";
 import useMusicControl from "@/hooks/useMusicControl";
 import VolumeProgress from "@/components/progress.vue";
@@ -102,7 +102,6 @@ export default {
     height: 50px;
     display: flex;
     align-items: center;
-    width: 140px;
     position: relative;
     i {
       font-size: 22px;

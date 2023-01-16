@@ -53,6 +53,7 @@ export default {
     const dragProgressBar = (e) => {
       let i;
       const move = (e) => {
+        if (el.value.getBoundingClientRect().x == 0) return;
         let current = e.clientX - el.value.getBoundingClientRect().x;
         if (current > props.width) {
           current = props.width;
@@ -97,6 +98,7 @@ export default {
   padding: 10px 5px;
   box-sizing: content-box;
   z-index: 1;
+
   .music-progress-item {
     height: 6px;
     background-color: @highlightColor;

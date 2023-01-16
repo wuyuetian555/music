@@ -10,13 +10,19 @@
       </div>
       <div class="lyric-main">
         <div class="img">
-          <img :src="musicInfo.musicBg" alt="" />
+          <img :src="musicInfo.musicBg" />
         </div>
         <div class="lyric-list">
           <div class="song-name">
             <h2>{{ musicInfo.musicName }}</h2>
           </div>
-          <div class="lyric-list-item" ref="scrollList">
+          <div
+            class="lyric-list-item"
+            ref="scrollList"
+            @mouseover="mouseover"
+            @mouseleave="mouseLeave"
+            @click="musicToCurrentIndex"
+          >
             <div
               v-for="(item, index) in songLyric"
               :key="index"
@@ -26,8 +32,34 @@
                 'tlyric-wrap': startIndex == 8,
               }"
             >
-              <span> {{ item.lyric }}</span>
-              <span v-if="songTlyric"> {{ songTlyric[item.time] }}</span>
+              <i
+                class="iconfont icon-yousanjiao"
+                v-show="showLyricTime == index"
+                :data-lyricIndex="index"
+                :data-time="item.initTime"
+              ></i>
+              <div
+                class="lyric-warp-item"
+                :data-lyricIndex="index"
+                :data-time="item.initTime"
+              >
+                <span :data-lyricIndex="index" :data-time="item.initTime">
+                  {{ item.lyric }}</span
+                >
+                <span
+                  v-if="songTlyric"
+                  :data-lyricIndex="index"
+                  :data-time="item.initTime"
+                >
+                  {{ songTlyric[item.time] }}</span
+                >
+              </div>
+              <span
+                v-show="showLyricTime == index"
+                :data-lyricIndex="index"
+                :data-time="item.initTime"
+                >{{ item.time.split(".")[0] }}</span
+              >
             </div>
           </div>
         </div>
@@ -62,6 +94,8 @@ export default {
       currentTime: 0,
       startIndex: 8,
       scrollHeight: 32,
+      showLyricTime: -1,
+      isScroll: true,
     });
 
     const hide = () => {
@@ -109,7 +143,7 @@ export default {
                 songLyric[i + 1].initTime > curTime
               ) {
                 data.lyricindex = i;
-                if (data.scrollList) {
+                if (data.scrollList && data.isScroll) {
                   data.scrollList.scrollTop =
                     data.lyricindex >= data.startIndex
                       ? (data.lyricindex - data.startIndex + 1) *
@@ -131,10 +165,24 @@ export default {
     onActivated(() => {
       audio.addEventListener("timeupdate", listenLyric);
     });
+    const mouseover = (e) => {
+      data.isScroll = false;
+      data.showLyricTime = e.target.dataset.lyricindex;
+    };
+    const mouseLeave = () => {
+      data.isScroll = true;
+      data.showLyricTime = -1;
+    };
+    const musicToCurrentIndex = (e) => {
+      audio.currentTime = e.target.dataset.time;
+    };
     return {
       hide,
       ...toRefs(data),
       audio,
+      mouseover,
+      mouseLeave,
+      musicToCurrentIndex,
     };
   },
 };
@@ -161,7 +209,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #00ffb3;
+    background-color: #00f7ff;
   }
 
   .layout {
@@ -198,35 +246,40 @@ export default {
         height: 415px;
         overflow: hidden;
         border: 5px;
-        margin-left: 200px;
-
-        img {
-          width: 100%;
-          height: 100%;
-        }
+        margin-right: 200px;
       }
 
       .lyric-list {
         overflow: auto;
         width: 600px;
-        margin: 0 auto;
         text-align: center;
-
         .song-name {
           margin-bottom: 20px;
         }
 
         .lyric-list-item {
           height: 480px;
-          overflow: hidden;
+          overflow: auto;
           transition: 0.5s;
 
           .lyric-wrap {
             height: 64px;
             line-height: 32px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            align-items: center;
+            padding: 0 10px;
+            i {
+              font-size: 25px;
+            }
+            .lyric-warp-item {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            }
+            span {
+              cursor: pointer;
+            }
             &.active {
               color: hsl(184, 100%, 50%);
               font-size: 19px;

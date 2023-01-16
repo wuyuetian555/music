@@ -138,7 +138,6 @@ export default {
       font-size: 28px;
       cursor: pointer;
       transform: scale(1.1);
-      z-index: 999;
       &:hover {
         font-weight: 700;
       }
