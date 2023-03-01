@@ -34,19 +34,24 @@
             :class="{ active: item.musicId == musicInfo.musicId }"
             v-if="item.iscanPlay == null"
           >
-            <span
+            <i
               v-if="
                 item.musicId == musicInfo.musicId &&
                 $store.state.musicplay.musicList.isPlay
               "
               class="pause"
-              >| |</span
+              >| |</i
             >
-            <span
+            <i
               class="play-btn iconfont icon-yousanjiao"
               v-else
               :data-musicid="item.musicId"
-            ></span>
+            ></i>
+            <i
+              class="iconfont icon-lajitong1"
+              :data-delete="item.musicId"
+              v-if="hideDeleteSong"
+            ></i>
           </div>
           <div v-else class="noplay">
             <span>无版权，暂不可播放</span>
@@ -78,9 +83,10 @@ import { useStore } from "vuex";
 import useMusicControl from "@/hooks/useMusicControl";
 import islikesong from "@/components/isLikeSong.vue";
 import { useRouter } from "vue-router";
+import confirm from "@/components/UI/confirm";
 export default {
   name: "SongListBody",
-  emit: ["playMusic"],
+  emit: ["playMusic", "deleteSong"],
   props: {
     musicListData: Object,
     height: {
@@ -91,6 +97,9 @@ export default {
     },
     hideAlbum: {
       default: true,
+    },
+    hideDeleteSong: {
+      default: false,
     },
   },
   components: {
@@ -130,6 +139,10 @@ export default {
           params: {
             mvId: target.dataset.mvid,
           },
+        });
+      } else if (target.dataset.delete) {
+        confirm().then((res) => {
+          res && emit("deleteSong", { musicId: target.dataset.delete });
         });
       }
     };
@@ -214,7 +227,9 @@ export default {
           .play-btn {
             font-size: 34px;
           }
-
+          .icon-lajitong1 {
+            font-size: 32px;
+          }
           .pause {
             font-size: 20px;
             width: 34px;

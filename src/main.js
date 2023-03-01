@@ -11,6 +11,8 @@ import Musicicon from "@/components/UI/music-icon.vue";
 import MusicInfiniteLoading from "@/components/UI/music-infinite-loading.vue";
 import MusicImage from "@/components/UI/music-image.vue";
 import MusicButton from "@/components/UI/music-button.vue";
+import MusicConfirm from "@/components/UI/music-confirm.vue";
+import 'default-passive-events'
 const app = createApp(App);
 app.component(MusicMask.name, MusicMask);
 app.component(MusicDialog.name, MusicDialog);
@@ -20,4 +22,5 @@ app.component(MusicInfiniteLoading.name, MusicInfiniteLoading);
 app.component(MusicMessage.name, MusicMessage);
 app.component(MusicImage.name, MusicImage);
 app.component(MusicButton.name, MusicButton);
+app.component(MusicConfirm.name, MusicConfirm);
 app.use(store).use(router).mount("#app");

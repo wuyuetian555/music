@@ -15,7 +15,7 @@
                 class="like"
                 :class="{ heightLight: $route.fullPath == '/user/like' }"
               >
-                <span class="iconfont icon-jushoucanggift"></span>
+                <i class="iconfont icon-jushoucanggift"></i>
                 <span class="text">喜欢</span>
               </div>
             </RouterLink>
@@ -24,26 +24,26 @@
                 class="like"
                 :class="{ heightLight: $route.fullPath == '/user/played' }"
               >
-                <span class="iconfont icon-yinle"></span>
+                <i class="iconfont icon-yinle"></i>
                 <span class="text">播放</span>
               </div>
             </RouterLink>
-            <!-- <div
-              class="like"
-              :class="{ heightLight: $route.fullPath == '/user/songlist' }"
-            >
-              <RouterLink to="/user/songlist">
-                <span class="iconfont icon-gedan2"></span>
-                <span class="text">歌单</span>
-              </RouterLink>
-            </div> -->
             <RouterLink to="/set">
               <div
                 class="like"
                 :class="{ heightLight: $route.fullPath == '/set' }"
               >
-                <span class="iconfont icon-shezhi"></span>
+                <i class="iconfont icon-shezhi"></i>
                 <span class="text">设置</span>
+              </div>
+            </RouterLink>
+            <RouterLink to="/upload">
+              <div
+                class="like"
+                :class="{ heightLight: $route.fullPath == '/upload' }"
+              >
+                <i class="iconfont icon-shangchuan- upload"></i>
+                <span class="text">上传</span>
               </div>
             </RouterLink>
           </div>
@@ -54,7 +54,7 @@
                 class="like"
                 :class="{ heightLight: $route.fullPath == '/user/like' }"
               >
-                <span class="iconfont icon-jushoucanggift"></span>
+                <i class="iconfont icon-jushoucanggift"></i>
                 <span class="text">我的喜欢</span>
               </div>
             </RouterLink>
@@ -63,26 +63,26 @@
                 class="like"
                 :class="{ heightLight: $route.fullPath == '/user/played' }"
               >
-                <span class="iconfont icon-yinle"></span>
+                <i class="iconfont icon-yinle"></i>
                 <span class="text">最近播放</span>
               </div>
             </RouterLink>
-            <!-- <div
-              class="like"
-              :class="{ heightLight: $route.fullPath == '/user/songlist' }"
-            >
-              <RouterLink to="/user/songlist">
-                <span class="iconfont icon-gedan2"></span>
-                <span class="text">我收藏的歌单</span>
-              </RouterLink>
-            </div> -->
             <RouterLink to="/set">
               <div
                 class="like"
                 :class="{ heightLight: $route.fullPath == '/set' }"
               >
-                <span class="iconfont icon-shezhi"></span>
+                <i class="iconfont icon-shezhi"></i>
                 <span class="text">设置</span>
+              </div>
+            </RouterLink>
+            <RouterLink to="/upload">
+              <div
+                class="like"
+                :class="{ heightLight: $route.fullPath == '/upload' }"
+              >
+                <i class="iconfont icon-shangchuan- upload"></i>
+                <span class="text">上传</span>
               </div>
             </RouterLink>
           </div>
@@ -139,8 +139,11 @@ export default {
       flex-direction: column;
       cursor: pointer;
       transition: all 0.2s;
-      span {
+      i {
         font-size: 17px;
+        &.upload {
+          font-size: 20px;
+        }
       }
 
       .text {
@@ -183,9 +186,12 @@ export default {
         background-color: @highlightColor;
       }
 
-      span {
+      i {
         margin-right: 5px;
         font-size: 17px;
+        &.upload {
+          font-size: 20px;
+        }
       }
 
       .text {

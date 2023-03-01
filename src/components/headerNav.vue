@@ -40,11 +40,6 @@ export default {
         value: "搜 索",
         link: "/search",
       },
-      {
-        id: 4,
-        value: "上 传11",
-        link: "/singerList",
-      },
     ]);
 
     const MouseEnterNav = (index) => {
@@ -58,9 +53,6 @@ export default {
         case 3:
           divDom.value.style.left = "230px";
           break;
-        case 4:
-          divDom.value.style.left = "330px";
-          break;
         default:
           break;
       }
@@ -72,17 +64,13 @@ export default {
       clickIndex.value = e.target.dataset.index;
     };
     watch(
-      () => route.fullPath,
+      () => route.meta,
       (newVal) => {
-        if (
-          newVal != "/home" &&
-          newVal != "/search" &&
-          newVal != "/singerList"
-        ) {
-          divDom.value.style.display = "none";
-          clickIndex.value=0;
-        } else {
+        if (newVal.showDivDom) {
           divDom.value.style.display = "block";
+        } else {
+          divDom.value.style.display = "none";
+          clickIndex.value = 0;
         }
       }
     );

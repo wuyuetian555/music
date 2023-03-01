@@ -12,6 +12,7 @@ const SingerDetail = () => import("../views/singerDetail/index.vue");
 const Album = () => import("../views/album/index.vue");
 const Mv = () => import("../views/mv/index.vue");
 const Set = () => import("../views/set/index.vue");
+const Upload = () => import("../views/upload/index.vue");
 const routes = [
   {
     path: "/",
@@ -24,6 +25,7 @@ const routes = [
         name: "Home",
         meta: {
           keepAlive: true,
+          showDivDom: true,
         },
       },
       {
@@ -40,6 +42,7 @@ const routes = [
         name: "SingerList",
         meta: {
           keepAlive: true,
+          showDivDom: true,
         },
       },
       {
@@ -48,6 +51,16 @@ const routes = [
         name: "Search",
         meta: {
           keepAlive: true,
+          showDivDom: true,
+        },
+      },
+      {
+        path: "/upload",
+        component: Upload,
+        name: "Upload",
+        meta: {
+          keepAlive: true,
+          showDivDom: true,
         },
       },
       {

@@ -1,9 +1,9 @@
 <template>
   <button class="music-button">
     <i class="iconfont" :class="icon" v-if="icon"></i>
-    <span>
+    <div>
       <slot></slot>
-    </span>
+    </div>
   </button>
 </template>
 
@@ -37,7 +37,8 @@ button {
     font-size: 14px;
     vertical-align: baseline;
   }
-  span {
+  div {
+    display: inline-block;
     margin-left: 5px;
   }
 }

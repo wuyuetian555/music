@@ -6,6 +6,8 @@
         v-if="playedMusic"
         :musicListData="playedMusic"
         @playMusic="handlePlayMusic"
+        @deleteSong="deleteSong"
+        hideDeleteSong="true"
       ></songlist>
     </template>
     <template v-else>
@@ -46,12 +48,16 @@ export default {
     const deletSongList = (songList) => {
       store.commit("user/deleteAllPlayedMusic", { songList });
     };
+    const deleteSong = ({ musicId }) => {
+      store.commit("user/deleteOneSong", { musicId });
+    };
     useScrollTop();
     return {
       playedMusic,
       handlePlayMusic,
       show,
       deletSongList,
+      deleteSong,
     };
   },
 };

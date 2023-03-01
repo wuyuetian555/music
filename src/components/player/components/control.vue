@@ -6,14 +6,13 @@
       <i class="iconfont icon-bofang1" v-show="!isPlay" @click="playMusic"></i>
       <i class="iconfont icon-xiayishou" @click="nextMusic"></i>
     </div>
-    <div class="volume" @mouseleave="mouseLeave">
+    <div class="volume" @mouseleave="mouseLeave" @mouseenter="mouseEnter">
       <i
         class="iconfont"
         :class="{
           'icon-shengyin_shiti': volume != 0,
           'icon-24gf-volumeCross': volume == 0,
         }"
-        @mouseenter="mouseEnter"
       ></i>
       <VolumeProgress
         v-model:currentTime="volume"
@@ -98,7 +97,7 @@ export default {
     }
   }
   .volume {
-    margin-left: 25px;
+    padding: 10px;
     height: 50px;
     display: flex;
     align-items: center;
@@ -114,7 +113,7 @@ export default {
       margin-left: 10px;
       background-color: transparent;
       position: absolute;
-      left: 17px;
+      left: 27px;
       padding-right: 200px;
     }
   }

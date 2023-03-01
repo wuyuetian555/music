@@ -68,6 +68,13 @@ export default {
       state.playedMusic.push(...songList);
       localStorage.setItem("playedMusic", JSON.stringify(songList));
     },
+    deleteOneSong(state, { musicId }) {
+      const index = state.playedMusic.findIndex(
+        (item) => item.musicId == musicId
+      );
+      state.playedMusic.splice(index, 1);
+      localStorage.setItem("playedMusic", JSON.stringify(state.playedMusic));
+    },
     deleteAllMyLike(state, { songList }) {
       state.mylike.splice(0);
       state.mylike.push(...songList);

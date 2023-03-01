@@ -119,12 +119,12 @@ export default {
     input {
       border: 0;
       outline: none;
-      height: 50px;
+      height: 40px;
       background: transparent;
       flex: 1;
       padding: 10px 20px;
       font-size: 14px;
-      line-height: 30px;
+      line-height: 40px;
       color: @primaryTextColor;
 
       &::-webkit-input-placeholder {
