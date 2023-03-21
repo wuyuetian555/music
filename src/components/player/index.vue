@@ -91,7 +91,7 @@ export default {
             data.filtercurrentTime = filterTime(audio.currentTime);
             data.currentTime = audio.currentTime;
             data.duration = filterTime(audio.duration);
-          }, 500);
+          }, 1000);
         }
       };
     }

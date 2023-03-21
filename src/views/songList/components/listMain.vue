@@ -1,11 +1,11 @@
 <template>
   <div class="songlist-body">
     <music-tabs :data="data" :bottomPosition="60"></music-tabs>
-    <songlistbody
+    <SongListBody
       :musicListData="musicListData"
       @playMusic="handlePlayMusic"
       height="45vh"
-    ></songlistbody>
+    ></SongListBody>
   </div>
 </template>
 
@@ -13,12 +13,12 @@
 import { findDetailedRecommendSongList } from "@/api/musicList";
 import { reactive, onMounted } from "vue";
 import { useRoute } from "vue-router";
-import songlistbody from "@/components/songListBody.vue";
+import SongListBody from "@/components/songListBody.vue";
 import useMusicControl from "@/hooks/useMusicControl";
 import usefIlterMusicData from "@/hooks/usefIlterMusicData";
 export default {
-  name: "SongListBody",
-  components: { songlistbody },
+  name: "ListMain",
+  components: { SongListBody },
   setup() {
     const data = reactive([
       {

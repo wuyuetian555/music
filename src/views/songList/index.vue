@@ -1,16 +1,16 @@
 <template>
   <div class="songlist">
-    <SongListHeader></SongListHeader>
-    <SongListBody></SongListBody>
+    <listHeader></listHeader>
+    <listMain></listMain>
   </div>
 </template>
 
 <script>
-import SongListHeader from "./components/songlist-header.vue"
-import SongListBody from "./components/songlist-body.vue"
+import listHeader from "./components/listHeader.vue";
+import listMain from "./components/listMain.vue";
 export default {
   name: "SongList",
-  components: { SongListHeader, SongListBody },
+  components: { listHeader, listMain },
 };
 </script>
 
@@ -18,6 +18,5 @@ export default {
 .songlist {
   color: @primaryTextColor;
   padding: @primaryPadding;
-
 }
 </style>

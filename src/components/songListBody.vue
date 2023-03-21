@@ -182,6 +182,7 @@ export default {
 
     .list-item {
       display: flex;
+      align-items: center;
       cursor: pointer;
 
       &.active {
@@ -189,7 +190,7 @@ export default {
       }
 
       &.disabled {
-        background-color: #ccc !important;
+        background-color: @highlightColor;
       }
 
       &:hover {
@@ -217,22 +218,23 @@ export default {
           visibility: hidden;
           display: flex;
           align-items: center;
-          height: 30px;
+          padding: 10px;
+          height: 50px;
           justify-content: flex-end;
           padding-right: 50px;
           &.active {
-            opacity: 1;
+            visibility: visible;
           }
 
           .play-btn {
-            font-size: 34px;
+            font-size: 32px;
           }
           .icon-lajitong1 {
             font-size: 32px;
           }
           .pause {
             font-size: 20px;
-            width: 34px;
+            width: 32px;
             height: 32px;
             display: inline-block;
             text-align: center;

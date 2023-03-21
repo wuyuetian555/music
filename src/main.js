@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "@/assets/styles/common.less";
+import "element-plus/es/components/message/style/css";
 import MusicMask from "@/components/UI/music-mask.vue";
 import MusicDialog from "@/components/UI/music-dialog.vue";
 import MusicMessage from "@/components/UI/music-message.vue";
@@ -12,7 +13,7 @@ import MusicInfiniteLoading from "@/components/UI/music-infinite-loading.vue";
 import MusicImage from "@/components/UI/music-image.vue";
 import MusicButton from "@/components/UI/music-button.vue";
 import MusicConfirm from "@/components/UI/music-confirm.vue";
-import 'default-passive-events'
+import "default-passive-events";
 const app = createApp(App);
 app.component(MusicMask.name, MusicMask);
 app.component(MusicDialog.name, MusicDialog);

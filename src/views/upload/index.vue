@@ -11,6 +11,9 @@
       <template #0>
         <UploadMusic></UploadMusic>
       </template>
+      <template #1>
+        <UploadAdmin></UploadAdmin>
+      </template>
     </music-tabs>
   </div>
 </template>
@@ -18,10 +21,12 @@
 <script>
 import { ref } from "vue";
 import UploadMusic from "./components/uploadMusic/index.vue";
+import UploadAdmin from "./components/uploadAdmin/index.vue";
 export default {
   name: "Upload",
   components: {
     UploadMusic,
+    UploadAdmin,
   },
   setup() {
     const activeIndex = ref(0);

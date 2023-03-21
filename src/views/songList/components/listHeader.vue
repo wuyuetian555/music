@@ -2,7 +2,7 @@
   <div class="songlist-header">
     <div class="songlist-header-title">
       <div class="img">
-        <img :src="bg" alt="" />
+        <img :src="bg" />
       </div>
       <div class="detail">
         <div class="detail-name">
@@ -48,7 +48,7 @@ import { useRoute } from "vue-router";
 import musicDialog from "@/components/UI/music-dialog.vue";
 export default {
   components: { musicDialog },
-  name: "SongListHeader",
+  name: "ListHeader",
   setup() {
     const route = useRoute();
     const textarea = ref(null);

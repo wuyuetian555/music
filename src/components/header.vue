@@ -9,8 +9,9 @@
     <div class="header-right">
       <SearchInput></SearchInput>
       <div class="user">
-        <button>
+        <button @click.stop="show = !show">
           <span class="login">登 录</span>
+          <Login v-model:show="show" v-if="show"></Login>
           <i class="iconfont icon-touxiang"></i>
         </button>
         <div @click="changeTheme">
@@ -45,10 +46,11 @@ import Time from "@/components/time.vue";
 import Skin from "@/components/skin.vue";
 import SearchInput from "@/components/searchinput.vue";
 import { useStore } from "vuex";
-import { computed, onBeforeMount } from "vue";
+import { computed, onBeforeMount, ref } from "vue";
+import Login from "@/components/login/index.vue";
 export default {
   name: "Header",
-  components: { HeaderNav, Time, Skin, SearchInput },
+  components: { HeaderNav, Time, Skin, SearchInput, Login },
   setup() {
     const store = useStore();
     const theme = computed(() => {
@@ -61,8 +63,8 @@ export default {
       let target = e.target.dataset.theme;
       target ? store.commit("user/setTheme", e.target.dataset.theme) : null;
     };
-
-    return { theme, changeTheme };
+    const show = ref(false);
+    return { theme, changeTheme, show };
   },
 };
 </script>

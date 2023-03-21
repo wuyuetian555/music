@@ -119,7 +119,7 @@ export default {
 <style scoped lang="less">
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 0.3s ease;
 }
 
 .v-enter-from,
@@ -164,8 +164,6 @@ export default {
   }
   .tabs-container {
     color: @primaryTextColor;
-    width: 100%;
-    overflow: hidden;
   }
 }
 </style>
