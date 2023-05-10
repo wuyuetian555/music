@@ -190,7 +190,7 @@ export default {
         margin-right: 5px;
         font-size: 17px;
         &.upload {
-          font-size: 20px;
+          font-size: 17px;
         }
       }
 

@@ -11,10 +11,10 @@
     >
       <el-form-item prop="user">
         <el-input
-          v-model.number="formLabelAlign.user"
+          v-model="formLabelAlign.user"
           :prefix-icon="UserFilled"
           clearable
-          placeholder="请输入账号"
+          placeholder="请输入您的邮箱"
         />
       </el-form-item>
       <el-form-item prop="password">
@@ -23,7 +23,7 @@
           type="password"
           :prefix-icon="Lock"
           clearable
-          placeholder="请输入密码"
+          placeholder="请输入您的密码"
         />
       </el-form-item>
       <el-form-item class="login-btn">
@@ -44,6 +44,7 @@
 <script setup>
 import { reactive, ref } from "vue";
 import { UserFilled, Lock } from "@element-plus/icons-vue";
+import { useStore } from "vuex";
 const labelPosition = ref("right");
 const ruleFormRef = ref();
 const formLabelAlign = reactive({
@@ -54,26 +55,23 @@ const emit = defineEmits(["update:showLogin"]);
 const props = defineProps({
   showLogin: { type: Boolean },
 });
+const store = useStore();
 const submitForm = async (formEl) => {
   if (!formEl) return;
-  await delay();
-  await formEl.validate((valid, fields) => {
+
+  await formEl.validate((valid) => {
     if (valid) {
-      console.log("submit!");
-    } else {
-      console.log("error submit!", fields);
+      store.dispatch("user/requestLogin", {
+        email: formLabelAlign.user,
+        password: formLabelAlign.password,
+      });
     }
   });
 };
 const rules = reactive({
-  user: [{ required: true, message: "请输入账号", trigger: "blur" }],
-  password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+  user: [{ required: true, message: "请输入邮箱" }],
+  password: [{ required: true, message: "请输入密码" }],
 });
-const delay = () => {
-  return new Promise((resolve, reject) => {
-    setTimeout(resolve, 3000);
-  });
-};
 </script>
 
 <style scoped lang="less">
@@ -97,7 +95,7 @@ const delay = () => {
     }
   }
   .el-form {
-    width: 70%;
+    width: 80%;
     .el-form-item {
       ::v-deep label {
         color: @primaryTextColor;

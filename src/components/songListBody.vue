@@ -52,6 +52,7 @@
               :data-delete="item.musicId"
               v-if="hideDeleteSong"
             ></i>
+            <i class="iconfont icon-xiazai" :data-xiazai="item.musicId"></i>
           </div>
           <div v-else class="noplay">
             <span>无版权，暂不可播放</span>
@@ -79,6 +80,7 @@
 
 <script>
 import { ref } from "vue";
+import axios from "axios";
 import { useStore } from "vuex";
 import useMusicControl from "@/hooks/useMusicControl";
 import islikesong from "@/components/isLikeSong.vue";
@@ -144,6 +146,31 @@ export default {
         confirm().then((res) => {
           res && emit("deleteSong", { musicId: target.dataset.delete });
         });
+      } else if (target.dataset.xiazai) {
+        store.dispatch("musicplay/downloadMusic", {
+          musicId: target.dataset.xiazai,
+        });
+        // confirm();
+        // axios({
+        //   url: "http://124.220.0.103:3001/music/1681892043773.m4a",
+        //   method: "GET",
+        //   responseType: "arraybuffer",
+        //   withCredentials: false,
+        // }).then((response) => {
+        //   // 创建Blob对象
+        //   const blob = new Blob([response.data], {
+        //     type: response.headers["content-type"],
+        //   });
+        //   // 创建a标签并模拟点击下载
+        //   const a = document.createElement("a");
+        //   const downloadUrl = window.URL.createObjectURL(blob);
+        //   a.href = downloadUrl;
+        //   a.download = "1.m4a";
+        //   document.body.appendChild(a);
+        //   a.click();
+        //   window.URL.revokeObjectURL(downloadUrl);
+        //   document.body.removeChild(a);
+        // });
       }
     };
     const { pauseMusic } = useMusicControl();
@@ -231,6 +258,11 @@ export default {
           }
           .icon-lajitong1 {
             font-size: 32px;
+          }
+          .icon-xiazai,
+          .icon-xiazai {
+            font-size: 32px;
+            transform: scale(0.8);
           }
           .pause {
             font-size: 20px;

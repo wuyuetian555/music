@@ -3,14 +3,14 @@
     <div class="search-input" :style="{ width, height }">
       <input
         type="text"
-        v-model="searValue"
+        v-model="searchValue"
         placeholder="搜索音乐"
         ref="input"
-        @keyup.enter="searchSongs(searValue)"
+        @keyup.enter="searchSongs(searchValue)"
       />
       <span
         class="iconfont icon-fangdajing icon"
-        @click.enter="searchSongs(searValue)"
+        @click.enter="searchSongs(searchValue)"
       ></span>
     </div>
     <div
@@ -55,7 +55,7 @@ export default {
     const data = reactive({
       input: null,
       list: null,
-      searValue: "",
+      searchValue: "",
       searchSuggest: [],
     });
     const store = useStore();
@@ -72,16 +72,16 @@ export default {
     });
 
     const getSearchSuggest = () => {
-      data.searValue.trim() != "" &&
-        findsearchSuggest({ keywords: data.searValue }).then((res) => {
+      data.searchValue.trim() != "" &&
+        findsearchSuggest({ keywords: data.searchValue }).then((res) => {
           data.searchSuggest = res.result.songs.slice(0, 10);
         });
     };
     const debounceSearch = useDebounce(getSearchSuggest, 500);
     const handleClick = async (e) => {
       const target = e.target;
-      data.searValue = target.dataset.musicname;
-      searchSongs(data.searValue);
+      data.searchValue = target.dataset.musicname;
+      searchSongs(data.searchValue);
     };
     const searchSongs = async (value) => {
       if (value.trim() == "") return;
@@ -89,10 +89,12 @@ export default {
       data.input.blur();
       store.commit("search/getSearchList", { songList: result.result.songs });
       data.list.style.height = 0;
+      store.commit("search/editActiveIndex", { activeIndex: 0 });
+      store.commit("search/getSearchValue", { searchValue: value });
       router.push("/search");
     };
     watch(
-      () => data.searValue,
+      () => data.searchValue,
       (newVal) => {
         newVal.trim() == "" ? (data.searchSuggest = []) : null;
         debounceSearch();
@@ -109,6 +111,8 @@ export default {
 
 <style scoped lang="less">
 .search-header {
+  position: relative;
+  z-index: 11;
   .search-input {
     background-color: @highlightColor;
     display: flex;

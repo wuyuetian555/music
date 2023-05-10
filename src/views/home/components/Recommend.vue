@@ -28,7 +28,7 @@
         </div>
       </div>
       <!-- 推荐歌单 -->
-      <div class="recommend-songlist">
+      <!-- <div class="recommend-songlist">
         <div class="recommend-songlist-item">
           <img src="@/assets/images/1.jpg" alt="" />
           <div class="music-bofang-icon">
@@ -36,9 +36,9 @@
           </div>
         </div>
         <span>每日推荐</span>
-      </div>
+      </div> -->
       <!-- 新歌推荐 -->
-      <div class="recommend-songlist">
+      <!-- <div class="recommend-songlist">
         <div class="recommend-songlist-item">
           <img src="images/4.jpg" alt="" />
           <div class="music-bofang-icon">
@@ -46,8 +46,8 @@
           </div>
         </div>
         <span>新歌推荐</span>
-      </div>
-      <div class="recommend-songlist">
+      </div> -->
+      <!-- <div class="recommend-songlist">
         <div class="recommend-songlist-item">
           <img src="images/2.png" alt="" />
           <div class="music-bofang-icon">
@@ -55,20 +55,20 @@
           </div>
         </div>
         <span>百万收藏</span>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { onMounted, reactive, toRefs, computed } from "vue";
-import useMusicControl from "@/hooks/useMusicControl";
-import isLikeSongVue from "@/components/isLikeSong.vue";
+import { useStore } from 'vuex';
+import { onMounted, reactive, toRefs, computed } from 'vue';
+import useMusicControl from '@/hooks/useMusicControl';
+import isLikeSongVue from '@/components/isLikeSong.vue';
 export default {
-  name: "Recommend",
+  name: 'Recommend',
   components: {
-    isLikeSongVue,
+    isLikeSongVue
   },
   setup() {
     const store = useStore();
@@ -84,20 +84,20 @@ export default {
           store.state.musicplay.musicList.data.name
           ? true
           : false;
-      }),
+      })
     });
 
     onMounted(() => {
-      store.dispatch("musicplay/getPersonalMusic");
+      store.dispatch('musicplay/getPersonalMusic');
     });
 
     const playPersonalMusic = (musicId) => {
-      store.dispatch("musicplay/PersonalMusicAddToMusicList", musicId);
+      store.dispatch('musicplay/PersonalMusicAddToMusicList', musicId);
     };
 
     const { pauseMusic } = useMusicControl();
     return { ...toRefs(personalMusic), playPersonalMusic, pauseMusic };
-  },
+  }
 };
 </script>
 
@@ -189,7 +189,7 @@ export default {
             margin-right: 15px;
             cursor: pointer;
             &::after {
-              content: "";
+              content: '';
               width: 2px;
               height: 17px;
               background-color: @primaryTextColor;

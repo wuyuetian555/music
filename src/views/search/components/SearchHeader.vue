@@ -3,14 +3,14 @@
     <div class="search-input">
       <input
         type="text"
-        v-model="searValue"
+        v-model="searchValue"
         placeholder="请输入歌名"
         ref="input"
-        @keyup.enter="searchSongs(searValue)"
+        @keyup.enter="searchSongs(searchValue)"
       />
       <span
         class="iconfont icon-fangdajing icon"
-        @click="searchSongs(searValue)"
+        @click="searchSongs(searchValue)"
       ></span>
     </div>
     <div class="search-suggest" @click="handleClick" ref="list">
@@ -27,8 +27,7 @@
 </template>
 
 <script>
-import { findsearchSuggest } from "@/api/search";
-import { reactive, watch, onMounted, onActivated, toRefs } from "vue";
+import { reactive, watch, onMounted, toRefs, computed } from "vue";
 import useDebounce from "@/hooks/useDebounce";
 import { useStore } from "vuex";
 export default {
@@ -37,8 +36,15 @@ export default {
     const data = reactive({
       input: null,
       list: null,
-      searValue: "",
       searchSuggest: [],
+    });
+    const searchValue = computed({
+      get() {
+        return store.state.search.searchValue;
+      },
+      set(val) {
+        store.commit("search/getSearchValue", { searchValue: val });
+      },
     });
     const store = useStore();
     onMounted(() => {
@@ -52,31 +58,26 @@ export default {
         }, 200);
       };
     });
-    onActivated(() => {
-      data.input.focus();
-      data.searValue = "";
-    });
-    const getSearchSuggest = () => {
-      data.searValue.trim() != "" &&
-        findsearchSuggest({ keywords: data.searValue }).then((res) => {
-          data.searchSuggest = res.result.songs.slice(0, 10);
-        });
+
+    const getSearchSuggest = async () => {
+      if (searchValue.value == "") return;
+      const songs = await store.dispatch("search/searchWYYSongsSuggest");
+      data.searchSuggest = songs;
     };
     const debounceSearch = useDebounce(getSearchSuggest, 500);
     const handleClick = async (e) => {
       const target = e.target;
-      data.searValue = target.dataset.musicname;
-      searchSongs(data.searValue);
+      searchValue.value = target.dataset.musicname;
+      searchSongs(searchValue.value);
     };
     const searchSongs = async (value) => {
       if (value.trim() == "") return;
-      const result = await findsearchSuggest({ keywords: value, limit: 55 });
+      await store.dispatch("search/searchWYYSongs", { keywords: value });
       data.input.blur();
-      store.commit("search/getSearchList", { songList: result.result.songs });
       data.list.style.height = 0;
     };
     watch(
-      () => data.searValue,
+      () => searchValue.value,
       (newVal) => {
         newVal.trim() == "" ? (data.searchSuggest = []) : null;
         debounceSearch();
@@ -86,6 +87,7 @@ export default {
       handleClick,
       ...toRefs(data),
       searchSongs,
+      searchValue,
     };
   },
 };
@@ -95,7 +97,8 @@ export default {
 .search-header {
   margin-left: 50%;
   transform: translateX(-50%);
-
+  position: relative;
+  z-index: 10;
   .search-input {
     width: 600px;
     height: 50px;
@@ -160,6 +163,7 @@ export default {
       height: 30px;
       line-height: 30px;
       padding: 0 20px;
+
       cursor: pointer;
       &:hover {
         background-color: @highlightColor !important;

@@ -1,42 +1,53 @@
-import { findPersonalMusic } from "@/api/home.js";
-import { findMusicUrl } from "@/api/music";
-import { filterTime } from "@/utils/usefilter";
-import Dialog from "@/components/UI/Dialog.js";
-import Message from "@/components/UI/message.js";
+import { findPersonalMusic } from '@/api/home.js';
+import {
+  findMusicUrl,
+  findMusicDetail,
+  getWYYMusicFileBlob
+} from '@/api/music';
+import { filterTime } from '@/utils/usefilter';
+import Dialog from '@/components/UI/Dialog.js';
+import Message from '@/components/UI/message.js';
+import {
+  getMyUploadMusicUrl,
+  getMusicDetail,
+  getMusicFileBlob
+} from '@/api/user.js';
+import { h } from 'vue';
+import { ElNotification } from 'element-plus';
 export default {
   namespaced: true,
   state() {
     return {
       audio: new Audio(),
       musicList: {
-        playingMusic: localStorage.getItem("playingMusic")
-          ? JSON.parse(localStorage.getItem("playingMusic"))
+        playingMusic: localStorage.getItem('playingMusic')
+          ? JSON.parse(localStorage.getItem('playingMusic'))
           : {
-              musicName: "听我想听",
-              musicId: "",
-              musicMv: "", //正在播放的歌曲信息
-              zhuanji: "",
-              zhuanjiId: "",
-              SingerId: "",
-              musicBg: "",
-              Singer: "",
+              musicName: '听我想听',
+              musicId: '',
+              musicMv: '', //正在播放的歌曲信息
+              zhuanji: '',
+              zhuanjiId: '',
+              SingerId: '',
+              musicBg: '',
+              Singer: ''
             },
         data: {
-          data: localStorage.getItem("musicList")
-            ? JSON.parse(localStorage.getItem("musicList"))
+          data: localStorage.getItem('musicList')
+            ? JSON.parse(localStorage.getItem('musicList'))
             : [],
-          index: "",
-          name: false,
+          index: '',
+          name: false
         }, //播放队列中的所有歌曲
-        isPlay: false, //是否播放
+        isPlay: false //是否播放
       },
       personalMusic: {
         data: [],
         index: 0,
-        name: true,
+        name: true
       }, //个性电台
       showLyric: false,
-      showMusicList: false,
+      showMusicList: false
     };
   },
   getters: {
@@ -48,7 +59,7 @@ export default {
     },
     getMusicListLength(state) {
       return state.musicList.data.data.length;
-    },
+    }
   },
   mutations: {
     playMusic(state, src) {
@@ -76,7 +87,7 @@ export default {
         musicData.playingMusic[key] = musicData.data.data[index][key];
       }
       localStorage.setItem(
-        "playingMusic",
+        'playingMusic',
         JSON.stringify(musicData.playingMusic)
       );
     },
@@ -96,7 +107,7 @@ export default {
     },
     closeLyric(state) {
       state.showLyric = false;
-    },
+    }
   },
   actions: {
     async getPersonalMusic({ state }) {
@@ -112,7 +123,7 @@ export default {
           SingerId: item.artists[0].id,
           duration: filterTime(item.duration / 1000),
           iscanPlay: item.noCopyrightRcmd,
-          zhuanjiId: item.album.id,
+          zhuanjiId: item.album.id
         };
       });
 
@@ -121,21 +132,26 @@ export default {
     },
 
     async getMusicUrl(state, id) {
-      const musicUrl = await findMusicUrl(id);
-      return musicUrl.data[0].url;
+      if (id.toString().includes('th')) {
+        const musicUrl = await getMyUploadMusicUrl({ id });
+        return musicUrl.data[0].url;
+      } else {
+        const musicUrl = await findMusicUrl(id);
+        return musicUrl.data[0].url;
+      }
     },
 
     async PersonalMusicAddToMusicList({ state, dispatch, commit }, musicId) {
       if (state.musicList.data.name) {
-        commit("playMusic");
+        commit('playMusic');
         return;
       }
-      const result = await dispatch("getMusicUrl", musicId);
+      const result = await dispatch('getMusicUrl', musicId);
       state.musicList.data = JSON.parse(JSON.stringify(state.personalMusic));
 
-      commit("playMusic", result);
-      commit("getPlayMusic", musicId);
-      await dispatch("user/getPlayedMusic", {}, { root: true });
+      commit('playMusic', result);
+      commit('getPlayMusic', musicId);
+      await dispatch('user/getPlayedMusic', {}, { root: true });
     },
     async nextMusic({ state, dispatch }) {
       let musicData = state.musicList.data;
@@ -143,27 +159,27 @@ export default {
         musicData.index = -1;
       }
       const nextMusicId = musicData.data[musicData.index + 1].musicId;
-      const result = await dispatch("playMusic", nextMusicId);
+      const result = await dispatch('playMusic', nextMusicId);
       if (!result) {
         musicData.data.splice(musicData.index + 1, 1);
-        await dispatch("nextMusic");
+        await dispatch('nextMusic');
       }
     },
     async nextPersonalMusic({ state, dispatch, commit }) {
       let musicData = state.musicList.data;
       if (musicData.data.length - 1 === musicData.index) {
-        const musicDate = await dispatch("getPersonalMusic");
+        const musicDate = await dispatch('getPersonalMusic');
         musicData.data.push(...musicDate);
       }
       const nextMusicId = musicData.data[musicData.index + 1].musicId;
-      await dispatch("playMusic", nextMusicId);
+      await dispatch('playMusic', nextMusicId);
     },
 
     async lastMusic({ state, dispatch }) {
       let musicData = state.musicList.data;
       if (musicData.index == 0) return;
       const lastMusicId = musicData.data[musicData.index - 1].musicId;
-      const result = await dispatch("playMusic", lastMusicId);
+      const result = await dispatch('playMusic', lastMusicId);
       if (!result) {
         musicData.data.splice(musicData.index - 1, 1);
       }
@@ -174,19 +190,19 @@ export default {
         return;
       }
       const lastMusicId = musicData.data[musicData.index - 1].musicId;
-      await dispatch("playMusic", lastMusicId);
+      await dispatch('playMusic', lastMusicId);
     },
     async songlistAddtoMusicList(
       { state, dispatch, commit },
       { musicId, musicListData }
     ) {
-      const url = await dispatch("musicisPlay", musicId);
+      const url = await dispatch('musicisPlay', musicId);
       if (!url) {
         Dialog({
           show: true,
           hidebtn: true,
-          text: "该歌曲暂时无法播放",
-          title: "提示",
+          text: '该歌曲暂时无法播放',
+          title: '提示'
         });
         return;
       }
@@ -195,22 +211,22 @@ export default {
         return !item.iscanPlay;
       });
       musicData.name = false;
-      commit("playMusic", url);
-      commit("getPlayMusic", musicId);
-      await dispatch("user/getPlayedMusic", {}, { root: true });
+      commit('playMusic', url);
+      commit('getPlayMusic', musicId);
+      await dispatch('user/getPlayedMusic', {}, { root: true });
     },
 
     async baseonSearchGetSongAddtoMusicList(
       { state, dispatch, commit },
       { song, musicId }
     ) {
-      const url = await dispatch("getMusicUrl", musicId);
+      const url = await dispatch('getMusicUrl', musicId);
       if (!url) {
         Dialog({
           show: true,
           hidebtn: true,
-          text: "该歌曲暂时无法播放",
-          title: "提示",
+          text: '该歌曲暂时无法播放',
+          title: '提示'
         });
         return;
       }
@@ -218,34 +234,82 @@ export default {
       if (!musicData.name) {
         const index = musicData.index || 0;
         musicData.data.splice(index + 1, 0, song[0]);
-        commit("playMusic", url);
-        commit("getPlayMusic", musicId);
-        await dispatch("user/getPlayedMusic", {}, { root: true });
+        commit('playMusic', url);
+        commit('getPlayMusic', musicId);
+        await dispatch('user/getPlayedMusic', {}, { root: true });
       } else {
         musicData.data = song;
         musicData.name = false;
-        commit("playMusic", url);
-        commit("getPlayMusic", musicId);
-        await dispatch("user/getPlayedMusic", {}, { root: true });
+        commit('playMusic', url);
+        commit('getPlayMusic', musicId);
+        await dispatch('user/getPlayedMusic', {}, { root: true });
       }
     },
     async playMusic({ dispatch, commit, getters }, musicId) {
-      const url = await dispatch("getMusicUrl", musicId);
+      const url = await dispatch('getMusicUrl', musicId);
       if (!url) {
-        Message();
+        ElNotification({
+          title: '提示',
+          message: '一首歌曲无法播放，已自动播放下一首',
+          type: 'error',
+          position: 'top-left'
+        });
         return false;
       } else {
-        commit("playMusic", url);
-        commit("getPlayMusic", musicId);
-        await dispatch("user/getPlayedMusic", {}, { root: true });
-        getters["getMusicListData"].name &&
-          commit("editPersonalMusicIndex", getters["getMusicListData"].index);
+        commit('playMusic', url);
+        commit('getPlayMusic', musicId);
+        await dispatch('user/getPlayedMusic', {}, { root: true });
+        getters['getMusicListData'].name &&
+          commit('editPersonalMusicIndex', getters['getMusicListData'].index);
         return true;
       }
     },
     async musicisPlay({ dispatch }, musicId) {
-      const url = await dispatch("getMusicUrl", musicId);
+      const url = await dispatch('getMusicUrl', musicId);
       return url ? url : false;
     },
-  },
+    async downloadMusic({ dispatch }, { musicId }) {
+      let musicName, singer, url, response;
+
+      if (musicId.toString().includes('th')) {
+        const res = await Promise.all([
+          getMusicDetail({ id: musicId }),
+          getMyUploadMusicUrl({ id: musicId })
+        ]);
+        musicName = res[0].data.musicName;
+        singer = res[0].data.Singer;
+        url = res[1].data[0].url;
+        ElNotification({
+          title: '提示',
+          message: '开始下载  ' + musicName + ' - ' + singer,
+          type: 'success',
+          position: 'top-left'
+        });
+        response = await getMusicFileBlob({ url });
+      } else {
+        const res = await Promise.all([
+          findMusicDetail(musicId),
+          findMusicUrl(musicId)
+        ]);
+        singer = res[0].songs[0].ar[0].name;
+        musicName = res[0].songs[0].name;
+        url = res[1].data[0].url;
+        ElNotification({
+          title: '提示',
+          message: '开始下载  ' + musicName + ' - ' + singer,
+          type: 'success',
+          position: 'top-left'
+        });
+        response = await getWYYMusicFileBlob({ url });
+      }
+
+      let blob = new Blob([response]);
+      let blobUrl = window.URL.createObjectURL(blob);
+      let a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = `${musicName}-${singer}.mp4`;
+      a.click();
+      window.URL.revokeObjectURL(blobUrl);
+    }
+  }
 };

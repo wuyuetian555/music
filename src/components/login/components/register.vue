@@ -9,11 +9,12 @@
       class="el-form"
       ref="ruleFormRef"
     >
-      <el-form-item prop="user">
+      <el-form-item prop="email" validate-status="success">
         <el-input
-          v-model.number="formLabelAlign.user"
-          placeholder="账号需由6-10位数字组成"
-          :prefix-icon="UserFilled"
+          v-model.trim="formLabelAlign.email"
+          type="email"
+          placeholder="请输入您的邮箱"
+          :prefix-icon="Message"
           clearable
         />
       </el-form-item>
@@ -35,20 +36,15 @@
           clearable
         />
       </el-form-item>
-      <el-form-item prop="email">
-        <el-input
-          v-model="formLabelAlign.email"
-          type="email"
-          placeholder="请输入您的邮箱"
-          :prefix-icon="Message"
-          clearable
-        />
-      </el-form-item>
 
       <el-form-item prop="captcha" class="captcha-btn">
         <el-input v-model="formLabelAlign.captcha" placeholder="请输入验证码" />
-        <el-button type="primary" :disabled="isDisabled" @click="getCaptcha">
-          <span v-if="!isDisabled">获取验证码</span>
+        <el-button
+          type="primary"
+          :disabled="isDisabled"
+          @click="getCaptcha(ruleFormRef)"
+        >
+          <span v-if="!isDisabled">获取邮箱验证码</span>
           <span v-else>{{ time }}</span>
         </el-button>
       </el-form-item>
@@ -68,10 +64,12 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, onUnmounted } from "vue";
 import { UserFilled, Lock, Message } from "@element-plus/icons-vue";
-import { register, checkUser, checkEmail, sendEmail } from "@/api/user";
+import { register, sendEmail } from "@/api/user";
 import { ElMessage } from "element-plus";
+import { validator } from "./validator";
+
 const emit = defineEmits(["update:showLogin"]);
 const props = defineProps({
   showLogin: {
@@ -81,101 +79,87 @@ const props = defineProps({
 const ruleFormRef = ref();
 const labelPosition = ref("right");
 const isDisabled = ref(false);
-const time = ref(10);
+const time = ref(60);
 let timer;
 const formLabelAlign = reactive({
-  user: "",
   password: "",
   checkPassword: "",
   email: "",
   captcha: "",
+  emailStatus: false,
 });
+const {
+  validatePassword,
+  validateCheckPassword,
+  validateEmail,
+  validateCaptcha,
+} = validator(formLabelAlign);
 
-const validateUser = async (rule, value, callback) => {
-  if (value === "") {
-    callback(new Error("请输入账号"));
-  } else {
-    let regExp = /^\d{6,10}$/;
-    if (!regExp.test(value)) {
-      callback(new Error("账号格式不对"));
-    } else {
-      const { status } = await checkUser({ user: formLabelAlign.user });
-      status == 400 ? callback(new Error("该用户名已存在")) : callback();
+const getCaptcha = async (ruleFormRef) => {
+  if (formLabelAlign.emailStatus) {
+    getEmailCode();
+    return;
+  }
+  ruleFormRef.validateField(["email"], async (valid) => {
+    if (valid) {
+      await getEmailCode();
     }
-  }
+  });
 };
-const validatePassword = (rule, value, callback) => {
-  if (value === "") {
-    callback(new Error("请输入密码"));
-  } else {
-    let regExp = /^[A-Za-z0-9]{8,15}$/;
-    if (!regExp.test(value)) {
-      callback(new Error("密码格式不对"));
-    } else {
-      callback();
-    }
-  }
-};
-const validateCheckPassword = (rule, value, callback) => {
-  if (value === "") {
-    callback(new Error("请确认密码"));
-  } else if (value !== formLabelAlign.password) {
-    callback(new Error("两次输入密码不一致"));
-  } else {
-    callback();
-  }
-};
-const validateEmail = (rule, value, callback) => {
-  if (value === "") {
-    callback(new Error("请输入您的邮箱"));
-  } else {
-    callback();
-  }
-};
-const validateCaptcha = (rule, value, callback) => {
-  if (value === "") {
-    callback(new Error("请输入邮箱验证码"));
-  } else {
-    const { status } = checkEmail({ email: formLabelAlign.email });
-    status == 400 ? callback(new Error("该邮箱已存在")) : callback();
-  }
-};
-const getCaptcha = () => {
+const getEmailCode = async () => {
   isDisabled.value = true;
   timer = setInterval(() => {
+    console.log(555);
     time.value--;
     if (time.value == 0) {
-      time.value = 10;
+      time.value = 60;
       clearInterval(timer);
       isDisabled.value = false;
     }
   }, 1000);
+  const { status } = await sendEmail({ email: formLabelAlign.email });
+  status == 200
+    ? ElMessage({
+        message: "验证码已发送。",
+        type: "success",
+      })
+    : null;
 };
 const rules = reactive({
-  user: [{ validator: validateUser, trigger: "blur" }],
   password: [{ validator: validatePassword, trigger: "blur" }],
   checkPassword: [{ validator: validateCheckPassword, trigger: "blur" }],
   email: [{ validator: validateEmail, trigger: "blur" }],
   captcha: [{ validator: validateCaptcha, trigger: "blur" }],
 });
-const submitForm = async (formEl) => {
-  if (!formEl) return;
-  await formEl.validate(async (valid, fields) => {
+const submitForm = async (ruleFormRef) => {
+  if (!ruleFormRef) return;
+  await ruleFormRef.validate(async (valid) => {
     if (valid) {
-      const { status } = await register({
-        user: formLabelAlign.user,
+      const { status, errors } = await register({
         password: formLabelAlign.password,
+        email: formLabelAlign.email,
+        captcha: formLabelAlign.captcha,
       });
 
-      status == 200
-        ? ElMessage({
-            message: "恭喜您，账号注册成功。",
-            type: "success",
-          })
-        : null;
+      if (status == 200) {
+        ruleFormRef.resetFields();
+        ElMessage({
+          message: "恭喜您，账号注册成功。",
+          type: "success",
+        });
+        emit("update:showLogin", !props.showLogin);
+      } else {
+        ElMessage({
+          message: errors,
+          type: "error",
+        });
+      }
     }
   });
 };
+onUnmounted(() => {
+  clearInterval(timer);
+});
 </script>
 
 <style scoped lang="less">
@@ -184,7 +168,7 @@ const submitForm = async (formEl) => {
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  height: 380px;
+  height: 350px;
 
   h1 {
     font-family: Georgia, "Times New Roman", Times, serif;
@@ -207,11 +191,11 @@ const submitForm = async (formEl) => {
       justify-content: space-between;
 
       .el-input {
-        width: 60%;
+        width: 50%;
       }
 
       button {
-        width: 35%;
+        width: 45%;
       }
     }
   }

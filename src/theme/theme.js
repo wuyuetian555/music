@@ -21,9 +21,7 @@ export const getRgba = ({ currentThemeDetail, Alpha }) => {
     let color = tinycolor(currentThemeDetail[key]).setAlpha(Alpha[key]);
     newObj[key] = color.toRgbString();
   }
-  newObj.topColor = tinycolor(currentThemeDetail.primaryColor)
-    .setAlpha(0.98)
-    .toString();
+  newObj.topColor = tinycolor(currentThemeDetail.primaryColor)  .toString();
   let asideColor = tinycolor(newObj.primaryColor).darken(5);
   let headerColor = tinycolor(newObj.primaryColor).darken(8);
   newObj.asideColor = tinycolor(asideColor)

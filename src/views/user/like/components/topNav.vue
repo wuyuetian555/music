@@ -1,5 +1,5 @@
 <template>
-  <div class="like-header" :class="{ showTopNav:showTopNav>=200 }">
+  <div class="like-header" :class="{ showTopNav: showTopNav >= 200 }">
     <h2>我的喜欢</h2>
     <div class="like-tabs">
       <music-tabs
@@ -16,47 +16,30 @@
       >
     </div>
   </div>
-  <!-- <Transition>
-    <div class="topNav" v-if="showTopNav">
-      <div class="like-tabs">
-        <music-tabs
-          :data="tabsDate"
-          bottomPosition="60"
-          width="auto"
-        ></music-tabs>
-      </div>
-      <div class="like-btn">
-        <music-button icon="icon-bofang1">播放全部</music-button>
-        <music-button icon="icon-lajitong1" @click="$emit('deleteSongs')"
-          >批量删除</music-button
-        >
-      </div>
-    </div>
-  </Transition> -->
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { computed, reactive } from "vue";
+import { useStore } from 'vuex';
+import { computed, reactive } from 'vue';
 export default {
-  name: "LikeTopNav",
-  emits: ["deleteSongs"],
+  name: 'LikeTopNav',
+  emits: ['deleteSongs'],
   setup() {
     const tabsDate = reactive([
       {
-        value: "歌曲",
-        id: 1,
-      },
+        value: '歌曲',
+        id: 1
+      }
     ]);
     const store = useStore();
     const showTopNav = computed(() => {
-      return store.getters["user/GETISSHOWTOPNAV"];
+      return store.getters['user/GETISSHOWTOPNAV'];
     });
     return {
       showTopNav,
-      tabsDate,
+      tabsDate
     };
-  },
+  }
 };
 </script>
 
@@ -73,14 +56,20 @@ export default {
   opacity: 0;
 }
 .like-header {
+  height: 172px;
   padding: @primaryPadding;
-  transition: all 0.3s;
+  transition: transform 0.3s;
+
+  border-radius: 5px;
   &.showTopNav {
     position: sticky;
-    top: -176px;
-    transform: translateY(176px);
+    top: -172px;
+    transform: translateY(172px);
     background-color: @topColor;
     z-index: 1;
+    background-image: url('@/assets/images/-2300cdf2406380eb.jpg');
+    background-size: cover;
+    background-position: center -200px;
   }
   .like-tabs {
     .music-tabs {
@@ -88,20 +77,6 @@ export default {
     }
   }
 
-  .like-btn {
-    padding-top: @primaryPadding;
-    button {
-      margin-right: 15px;
-    }
-  }
-}
-.topNav {
-  position: sticky;
-  top: 0;
-  background-color: @topColor;
-  z-index: 1;
-  padding: 0 20px;
-  padding-bottom: 20px;
   .like-btn {
     padding-top: @primaryPadding;
     button {

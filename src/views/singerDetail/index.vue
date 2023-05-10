@@ -49,22 +49,22 @@ export default {
       tabsData: [
         {
           value: "热门歌曲",
-          id: 1,
+          id: 0,
         },
         {
           value: "所有歌曲",
-          id: 2,
+          id: 1,
         },
         {
           value: "专辑",
-          id: 3,
+          id: 2,
         },
         {
           value: "视频",
-          id: 4,
+          id: 3,
         },
       ],
-      activeIndex: 0,
+      activeIndex: 2,
       tabs: null,
     });
     const store = useStore();
@@ -77,7 +77,10 @@ export default {
       () => scroll.value,
       (newVal) => {
         if (newVal > 300) {
-          data.tabs.$el.children[0].style.cssText = `position: sticky;top: 0px;background-color: var(--topColor);z-index: 1;border-radius:5px`;
+          data.tabs.$el.children[0].style.cssText = `position: sticky;top: 0px;background-color: var(--topColor);z-index: 1;border-radius:5px;
+          background-image: url("./images/-2300cdf2406380eb.jpg");
+          background-size: cover;
+          background-position: center -250px;`;
         } else {
           data.tabs.$el.children[0].style.cssText = ``;
         }

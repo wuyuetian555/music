@@ -60,7 +60,6 @@ const routes = [
         name: "Upload",
         meta: {
           keepAlive: true,
-          showDivDom: true,
         },
       },
       {

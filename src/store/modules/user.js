@@ -1,5 +1,7 @@
 import { themes } from "@/theme/model";
-import { changeStyle, theme } from "@/theme/theme";
+import { changeStyle } from "@/theme/theme";
+import { login } from "@/api/user";
+import { ElMessage } from "element-plus";
 export default {
   namespaced: true,
   state() {
@@ -24,6 +26,14 @@ export default {
         scroll: {},
         isShowTopNav: "",
       },
+      userinfo: {
+        email: localStorage.getItem("userinfo")
+          ? JSON.parse(localStorage.getItem("userinfo")).email
+          : null,
+        token: localStorage.getItem("userinfo")
+          ? JSON.parse(localStorage.getItem("userinfo")).token
+          : null,
+      },
     };
   },
   getters: {
@@ -42,6 +52,23 @@ export default {
       const musicList = rootState.musicplay.musicList.data;
       const song = musicList.data[musicList.index];
       commit("savePlayedMusic", { song });
+    },
+    async requestLogin({ state }, { email, password }) {
+      const { status, token } = await login({ email, password });
+      if (status == 200) {
+        state.userinfo.email = email;
+        state.userinfo.token = token;
+        localStorage.setItem("userinfo", JSON.stringify(state.userinfo));
+        ElMessage({
+          message: `Hi,欢迎回来${email}用户`,
+          type: "success",
+        });
+      } else {
+        ElMessage({
+          message: `邮箱或密码错误`,
+          type: "error",
+        });
+      }
     },
   },
   mutations: {
@@ -111,6 +138,11 @@ export default {
     },
     listenListScroll(state, scrollTop) {
       state.listDom.isShowTopNav = scrollTop;
+    },
+    signOut(state) {
+      state.userinfo.email = null;
+      state.userinfo.token = null;
+      localStorage.removeItem("userinfo");
     },
   },
 };

@@ -98,8 +98,6 @@ export default {
       }
 
       .recommend-songlist-item {
-        height: 190px;
-        width: 190px;
         background-color: @primaryColor;
         border-radius: 5px;
         overflow: hidden;

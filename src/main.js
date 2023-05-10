@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import "@/assets/styles/common.less";
 import "element-plus/es/components/message/style/css";
+import "element-plus/es/components/notification/style/css";
 import MusicMask from "@/components/UI/music-mask.vue";
 import MusicDialog from "@/components/UI/music-dialog.vue";
 import MusicMessage from "@/components/UI/music-message.vue";

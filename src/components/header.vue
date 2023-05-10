@@ -5,36 +5,43 @@
       <HeaderNav class="header-nav"></HeaderNav>
     </div>
 
-    <Time class="time"></Time>
     <div class="header-right">
       <SearchInput></SearchInput>
       <div class="user">
-        <button @click.stop="show = !show">
-          <span class="login">登 录</span>
+        <div class="login" @click.stop="show = !show" v-if="!userinfo.email">
+          <span>登 录</span>
           <Login v-model:show="show" v-if="show"></Login>
           <i class="iconfont icon-touxiang"></i>
-        </button>
-        <div @click="changeTheme">
-          <i
-            class="iconfont icon-baitian-qing theme"
-            v-if="theme == 'default'"
-            data-theme="dark"
-          ></i>
-          <i
-            class="iconfont icon-yueliang1 theme dark"
-            v-else-if="theme == 'dark'"
-            :data-theme="
-              $store.state.user.myThemeDetail.length != 0
-                ? 'myThemeDetail'
-                : 'default'
-            "
-          ></i>
-          <i
-            class="iconfont icon-pifu theme dark"
-            v-else
-            data-theme="default"
-          ></i>
         </div>
+
+        <el-popover
+          trigger="click"
+          v-else
+          width="225"
+          popper-class="el-popover1"
+          popper-style="backgroundColor:var(--primaryColor);borderColor:var(--primaryColor)"
+          :teleported="false"
+        >
+          <template #reference>
+            <div>
+              <div class="user-name ellipsis">
+                <h4>Hi,{{ userinfo.email.split("@")[0] }}</h4>
+                <span :title="userinfo.email">{{ userinfo.email }}</span>
+              </div>
+              <span class="avatar"
+                >{{ userinfo.email.slice(0, 2).toUpperCase() }}
+              </span>
+            </div>
+          </template>
+
+          <template #default>
+            <div class="sign-out">
+              <el-button type="primary" @click.stop="signOut"
+                >退出登录</el-button
+              >
+            </div>
+          </template>
+        </el-popover>
       </div>
     </div>
   </div>
@@ -45,26 +52,26 @@ import HeaderNav from "@/components/headerNav.vue";
 import Time from "@/components/time.vue";
 import Skin from "@/components/skin.vue";
 import SearchInput from "@/components/searchinput.vue";
-import { useStore } from "vuex";
-import { computed, onBeforeMount, ref } from "vue";
+
+import { ref, computed, onBeforeMount } from "vue";
 import Login from "@/components/login/index.vue";
+import { useStore } from "vuex";
 export default {
   name: "Header",
   components: { HeaderNav, Time, Skin, SearchInput, Login },
   setup() {
+    const show = ref(false);
     const store = useStore();
-    const theme = computed(() => {
-      return store.state.user.theme;
+    const userinfo = computed(() => {
+      return store.state.user.userinfo;
     });
     onBeforeMount(() => {
-      store.commit("user/initTheme", theme.value);
+      store.commit("user/initTheme", store.state.user.theme);
     });
-    const changeTheme = (e) => {
-      let target = e.target.dataset.theme;
-      target ? store.commit("user/setTheme", e.target.dataset.theme) : null;
+    const signOut = () => {
+      store.commit("user/signOut");
     };
-    const show = ref(false);
-    return { theme, changeTheme, show };
+    return { show, userinfo, signOut };
   },
 };
 </script>
@@ -99,68 +106,59 @@ export default {
     }
   }
 
-  .time {
-    flex: 1;
-  }
-
   .header-right {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-
-    .search {
-      border-radius: 30px;
-      width: 260px;
-      overflow: hidden;
-      display: flex;
-      height: 40px;
-      align-items: center;
-      background-color: @primaryColor;
-
-      input {
-        height: 100%;
-        padding: 0px 0px 0px 15px;
-        flex: 1;
-        outline: none;
-        background: transparent;
-        border: 0;
-        color: @primaryTextColor;
-
-        &::-webkit-input-placeholder {
-          color: @primaryTextColor;
-        }
-
-        &::-moz-placeholder {
-          color: @primaryTextColor;
-        }
-
-        &::-moz-placeholder {
-          color: @primaryTextColor;
-        }
-
-        &::-ms-input-placeholder {
-          color: @primaryTextColor;
-        }
-      }
-
-      span {
-        font-size: 25px;
-        color: @primaryTextColor;
-        background: transparent;
-        width: 50px;
-        text-align: center;
-        line-height: 40px;
-      }
+    justify-content: flex-end;
+    margin-right: 10px;
+    .search-header {
+      margin-right: 50px;
     }
 
     .user {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      color: @primaryTextColor;
 
-      button {
-        border: none;
+      .el-tooltip__trigger {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        min-width: 221px;
+        justify-content: flex-end;
+        .user-name {
+          max-width: 200px;
+          text-align: right;
+
+          h4 {
+            font-weight: bold;
+          }
+          span {
+            font-size: 12px;
+          }
+        }
+        .avatar {
+          display: inline-block;
+          border: 1px solid @primaryTextColor;
+          padding: 6px 8px;
+          border-radius: 5px;
+          margin-left: 20px;
+        }
+      }
+      .sign-out {
+        text-align: center;
+        button {
+          background-color: @asideColor;
+          border-color: @primaryColor;
+          width: 100%;
+          color: @primaryTextColor;
+        }
+      }
+      ::v-deep .el-popper__arrow::before {
+        background-color: @primaryTextColor;
+        border-color: @primaryTextColor;
+      }
+
+      .login {
         cursor: pointer;
         background: transparent;
         display: flex;
@@ -187,21 +185,6 @@ export default {
             opacity: 1;
             font-weight: 700;
           }
-        }
-      }
-
-      .theme {
-        font-size: 25px;
-        color: @primaryTextColor;
-        transition: all 0.2s;
-        cursor: pointer;
-        margin-right: 10px;
-        opacity: 0.6;
-        vertical-align: 0.15em;
-
-        &:hover {
-          opacity: 1;
-          font-weight: 700;
         }
       }
     }

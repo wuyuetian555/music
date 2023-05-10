@@ -2,7 +2,13 @@
   <div class="lyric">
     <div
       class="bg"
-      :style="{ backgroundImage: `url(${musicInfo.musicBg})` }"
+      :style="{
+        backgroundImage: `url(${
+          musicInfo.musicBg
+            ? musicInfo.musicBg
+            : '/images/-2300cdf2406380eb.jpg'
+        })`,
+      }"
     ></div>
     <div class="layout">
       <div class="lyric-btn">
@@ -10,7 +16,13 @@
       </div>
       <div class="lyric-main">
         <div class="img">
-          <img :src="musicInfo.musicBg" />
+          <img
+            :src="
+              musicInfo.musicBg
+                ? musicInfo.musicBg
+                : '/images/-2300cdf2406380eb.jpg'
+            "
+          />
         </div>
         <div class="lyric-list">
           <div class="song-name">
@@ -22,6 +34,7 @@
             @mouseover="mouseover"
             @mouseleave="mouseLeave"
             @click="musicToCurrentIndex"
+            v-if="songLyric.length"
           >
             <div
               v-for="(item, index) in songLyric"
@@ -62,6 +75,7 @@
               >
             </div>
           </div>
+          <div v-else class="nohaveLyric"><span>抱歉，暂无歌词</span></div>
         </div>
       </div>
       <div class="music-player">
@@ -77,6 +91,7 @@ import { useStore } from "vuex";
 import { findMusicLyric } from "@/api/music";
 import useSongLyric from "@/utils/useSongLyric";
 import Player from "@/components/player/index.vue";
+import { getMyUploadMusicLyric } from "@/api/user";
 export default {
   name: "Lyric",
   components: {
@@ -103,12 +118,24 @@ export default {
     };
     watch(
       () => store.getters["musicplay/getPlayingMusic"].musicId,
-      (newVal) => {
+      async (newVal) => {
         if (!newVal) return;
-        findMusicLyric(newVal).then(({ lrc, tlyric }) => {
+        if (newVal.toString().includes("th")) {
+          const { lrc, tlyric } = await getMyUploadMusicLyric({ id: newVal });
           const { result, tResult } = useSongLyric({
             lyric: lrc.lyric,
-            tlyric: tlyric.lyric,
+            tlyric: tlyric ? tlyric.lyric : "",
+          });
+          data.songTlyric = tResult;
+          data.songLyric = result;
+          data.startIndex = 8;
+          data.scrollHeight = 32;
+        } else {
+          const { lrc, tlyric } = await findMusicLyric(newVal);
+
+          const { result, tResult } = useSongLyric({
+            lyric: lrc.lyric,
+            tlyric: tlyric ? tlyric.lyric : "",
           });
           data.songTlyric = tResult;
           data.songLyric = result;
@@ -119,7 +146,7 @@ export default {
             data.startIndex = 8;
             data.scrollHeight = 32;
           }
-        });
+        }
       },
       { immediate: true }
     );
@@ -195,7 +222,7 @@ export default {
   left: 0;
   right: 0;
   margin: auto;
-  z-index: 1;
+  z-index: 12;
   height: 100vh;
   width: 1440px;
   overflow: auto;
@@ -247,6 +274,11 @@ export default {
         overflow: hidden;
         border: 5px;
         margin-right: 200px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
 
       .lyric-list {
@@ -287,6 +319,13 @@ export default {
           }
           .tlyric-wrap {
             height: 32px !important;
+          }
+        }
+        .nohaveLyric {
+          height: 480px;
+          line-height: 200px;
+          span {
+            font-size: 20px;
           }
         }
       }

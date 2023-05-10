@@ -36,10 +36,12 @@ button {
   i {
     font-size: 14px;
     vertical-align: baseline;
+    font-weight: bold;
   }
   div {
     display: inline-block;
     margin-left: 5px;
+    font-weight: bold;
   }
 }
 </style>

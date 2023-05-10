@@ -7,13 +7,13 @@
         :style="{ width: barWidth + 'px', top: bottomPosition + 'px' }"
       ></div>
       <div class="tabs-item">
-        <ul @click="getLeftPosition" :style="{ fontSize: size + 'px' }">
+        <ul @click="changePosition" :style="{ fontSize: size + 'px' }">
           <li
             v-for="(item, index) in data"
             :key="item.id"
             :style="{ padding: paddingWidth + 'px', width }"
             ref="item"
-            :class="{ active: index == computedActiveIndex }"
+            :class="{ active: index == activeIndex }"
             :data-index="index"
           >
             {{ item.value }}
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 export default {
   name: "MusicTabs",
   emit: ["change"],
@@ -64,21 +64,7 @@ export default {
   setup(props, { emit }) {
     const bar = ref(null);
     const item = ref(null);
-    const computedActiveIndex = ref(props.activeIndex);
-    const getLeftPosition = (e) => {
-      if (!e.target.dataset.index) return;
-      if (e.target.dataset.index != 0) {
-        const getLeftPosition =
-          (e.target.offsetWidth - props.paddingWidth * 2) / 2 -
-          props.barWidth / 2;
-        bar.value.style.left =
-          e.target.offsetLeft + props.paddingWidth + getLeftPosition + "px";
-      } else {
-        const getLeftPosition =
-          (e.target.offsetWidth - props.paddingWidth) / 2 - props.barWidth / 2;
-        bar.value.style.left = e.target.offsetLeft + getLeftPosition + "px";
-      }
-      computedActiveIndex.value = e.target.dataset.index;
+    const changePosition = (e) => {
       emit("change", props.data[e.target.dataset.index]);
       emit("update:activeIndex", e.target.dataset.index);
     };
@@ -88,29 +74,31 @@ export default {
 
     const init = () => {
       if (props.activeIndex != 0) {
+        const offsetWidth = item.value[props.activeIndex].offsetWidth;
+        const offsetLeft = item.value[props.activeIndex].offsetLeft;
         const getLeftPosition =
-          (item.value[props.activeIndex].offsetWidth - props.paddingWidth * 2) /
-            2 -
-          props.barWidth / 2;
+          (offsetWidth - props.paddingWidth * 2) / 2 - props.barWidth / 2;
         bar.value.style.left =
-          item.value[props.activeIndex].offsetLeft * props.activeIndex +
-          props.paddingWidth +
-          getLeftPosition +
-          "px";
+          offsetLeft + props.paddingWidth + getLeftPosition + "px";
       } else {
+        const offsetWidth = item.value[0].offsetWidth;
         const getLeftPosition =
-          (item.value[0].offsetWidth - props.paddingWidth) / 2 -
-          props.barWidth / 2;
-        bar.value.style.left =
-          item.value[0].offsetLeft * props.activeIndex + getLeftPosition + "px";
+          (offsetWidth - props.paddingWidth) / 2 - props.barWidth / 2;
+        bar.value.style.left = +getLeftPosition + "px";
       }
     };
 
+    watch(
+      () => props.activeIndex,
+      () => {
+        init();
+      }
+    );
+
     return {
-      getLeftPosition,
+      changePosition,
       bar,
       item,
-      computedActiveIndex,
     };
   },
 };
@@ -131,6 +119,7 @@ export default {
   width: auto;
   .tabs-bar-item {
     position: relative;
+
     .tabs-bar {
       position: absolute;
       height: 2px;

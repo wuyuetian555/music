@@ -33,13 +33,11 @@ export default {
 
 <style scoped lang="less">
 .bg {
-  height: 100vh;
-  background-size: cover;
-  transition: all 0.4s;
-  background-position: center;
-  position: fixed;
+  height: 100%;
   width: 100%;
-  filter: brightness(0.9) sepia(10%);
+  position: fixed;
+  background-position: center;
+  background-size: cover;
   background-image: url("@/assets/images/1.jpg");
 }
 

@@ -6,6 +6,7 @@
         :bottomPosition="45"
         :paddingWidth="10"
         width="auto"
+        v-model:activeIndex="activeIndex1"
         @change="changeType"
       ></music-tabs>
       <music-tabs
@@ -13,6 +14,7 @@
         :bottomPosition="45"
         :paddingWidth="10"
         width="auto"
+        v-model:activeIndex="activeIndex2"
         @change="changeArea"
       ></music-tabs>
       <music-tabs
@@ -21,6 +23,7 @@
         :paddingWidth="10"
         width="auto"
         class="tabs"
+        v-model:activeIndex="activeIndex3"
         @change="changeInitial"
       ></music-tabs>
     </div>
@@ -59,21 +62,24 @@ import {
   musicArtistArea,
   musicArtistType,
   musicArtistInitial,
-  filterArtistList,
-} from "./index.js";
-import { findArtistList } from "@/api/singer";
-import { reactive, toRefs, ref, computed } from "vue";
-import { useRouter } from "vue-router";
-import useScrollTop from "@/hooks/useScrollTop";
-import { useStore } from "vuex";
+  filterArtistList
+} from './index.js';
+import { findArtistList } from '@/api/singer';
+import { reactive, toRefs, ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import useScrollTop from '@/hooks/useScrollTop';
+import { useStore } from 'vuex';
 export default {
-  name: "SingerList",
+  name: 'SingerList',
   setup() {
     const root = ref(null);
     const router = useRouter();
+    const activeIndex1 = ref(0);
+    const activeIndex2 = ref(0);
+    const activeIndex3 = ref(0);
     const store = useStore();
     const showTopNav = computed(() => {
-      return store.getters["user/GETISSHOWTOPNAV"];
+      return store.getters['user/GETISSHOWTOPNAV'];
     });
     const data = reactive({
       musicArtistData: [],
@@ -82,10 +88,10 @@ export default {
         area: -1,
         initial: -1,
         limit: 20,
-        offset: 0,
+        offset: 0
       },
       isloading: false,
-      isfinfinished: false,
+      isfinfinished: false
     });
     const changeType = (e) => {
       data.singerCategory.type = e.id;
@@ -128,10 +134,10 @@ export default {
     const goSingerDetail = (e) => {
       if (e.target.dataset.singerid) {
         router.push({
-          name: "SingerDetail",
+          name: 'SingerDetail',
           params: {
-            singerId: e.target.dataset.singerid,
-          },
+            singerId: e.target.dataset.singerid
+          }
         });
       }
     };
@@ -148,8 +154,11 @@ export default {
       moreData,
       goSingerDetail,
       showTopNav,
+      activeIndex1,
+      activeIndex2,
+      activeIndex3
     };
-  },
+  }
 };
 </script>
 
@@ -159,12 +168,17 @@ export default {
   .artist-tabs {
     padding: @primaryPadding;
     transition: all 0.3s;
-    box-shadow: 0px 5px 10px 1px @primaryTextColor;
+    box-shadow: 0px 5px 500px 1px @primaryTextColor;
+
+    border-radius: 5px;
+
     &.showTopNav {
       position: sticky;
       top: -216px;
       transform: translateY(216px);
-      background-color: @topColor;
+      background-image: url('@/assets/images/-2300cdf2406380eb.jpg');
+      background-size: cover;
+      background-position: center -200px;
       z-index: 1;
       box-shadow: none;
     }

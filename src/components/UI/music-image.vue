@@ -10,9 +10,9 @@ import { useStore } from "vuex";
 export default {
   name: "MusicImage",
   props: {
-    src: { default: false },
+    src: { default: "" },
   },
-  setup() {
+  setup(props) {
     const store = useStore();
     const musicInfo = store.getters["musicplay/getPlayingMusic"];
     watch(
@@ -21,9 +21,13 @@ export default {
         if (musicInfo.musicBg || !musicInfo.musicId) {
           return;
         }
-        findMusicDetail(newVal[0]).then((res) => {
-          musicInfo.musicBg = res.songs[0].al.picUrl;
-        });
+        if (newVal[0].toString().includes("th")) {
+          musicInfo.musicBg = null;
+        } else {
+          findMusicDetail(newVal[0]).then((res) => {
+            musicInfo.musicBg = res.songs[0].al.picUrl;
+          });
+        }
       },
       {
         immediate: true,

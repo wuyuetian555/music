@@ -1,18 +1,18 @@
 <template>
   <el-card class="uploadMusic">
-    <el-form :model="form" label-width="120px">
-      <el-form-item label="歌曲名称：" required>
+    <el-form :model="form" label-width="120px" :rules="rules" ref="formRef">
+      <el-form-item label="歌曲名称：" required prop="musicName">
         <el-col :span="10">
           <el-input v-model="form.musicName" placeholder="歌曲名称为必填项"
         /></el-col>
       </el-form-item>
-      <el-form-item label="歌曲作者：" required>
+      <el-form-item label="歌曲作者：" required prop="Singer">
         <el-col :span="10">
           <el-input v-model="form.Singer" placeholder="歌曲作者为必填项">
           </el-input
         ></el-col>
       </el-form-item>
-      <el-form-item label="歌曲专辑：">
+      <el-form-item label="歌曲专辑：" prop="zhuanji">
         <el-col :span="10">
           <el-input v-model="form.zhuanji" placeholder="歌曲专辑为选填项" />
         </el-col>
@@ -24,16 +24,14 @@
           v-model:file-list="musicBg"
           :limit="1"
           class="el-upload"
+          ref="uploadImg"
+          accept=".png,.jfif,.pjpeg,.jpeg,.pjp,.jpg,.webp"
         >
           <el-icon><Plus /></el-icon>
 
           <template #file="{ file }">
             <div>
-              <img
-                class="el-upload-list__item-thumbnail"
-                :src="file.url"
-                alt=""
-              />
+              <img class="el-upload-list__item-thumbnail" :src="file.url" />
               <span class="el-upload-list__item-actions">
                 <span
                   class="el-upload-list__item-preview"
@@ -56,14 +54,18 @@
         <el-dialog v-model="dialogVisible">
           <img w-full :src="dialogImageUrl" alt="Preview Image" /> </el-dialog
       ></el-form-item>
-      <el-form-item label="歌曲资源：" required>
+      <el-form-item label="歌曲资源：" prop="resource">
         <el-upload
           ref="upload"
           class="upload-demo"
-          action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+          v-model:file-list="musicFile"
           :limit="1"
           :on-exceed="handleExceed"
           :auto-upload="false"
+          :before-upload="beforeUpload"
+          :http-request="startUploadMusic"
+          :on-change="asc"
+          accept=".MP3,.WMA,.WAV,.APE,.FLAC,.OGG,.AAC,.m4a"
         >
           <template #trigger>
             <el-button type="primary">选择音乐文件</el-button>
@@ -75,7 +77,9 @@
         </el-upload>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">发布</el-button>
+        <el-button type="primary" @click="submitUpload(formRef)"
+          >发布</el-button
+        >
         <el-button>保存</el-button>
       </el-form-item>
     </el-form>
@@ -85,22 +89,61 @@
 <script setup>
 import { reactive } from "vue";
 import { Delete, Plus, ZoomIn } from "@element-plus/icons-vue";
-import { uploadImg, uploadMusic } from "./index";
-
+import { handleImg, handleMusic, uploadMusic } from "./index";
+import { ref } from "vue";
 const form = reactive({
   musicName: "",
   Singer: "",
   zhuanji: "",
-  musicBg: "",
 });
+const formRef = ref();
+const upload = ref();
+const uploadImg = ref();
+const musicFile = ref([]);
+const musicBg = ref([]);
+const formData = new FormData();
 const {
   dialogImageUrl,
   dialogVisible,
-  musicBg,
   handleRemove,
   handlePictureCardPreview,
-} = uploadImg();
-const { upload, handleExceed, submitUpload } = uploadMusic();
+} = handleImg(musicBg);
+const { handleExceed } = handleMusic(upload);
+const { submitUpload, startUploadMusic } = uploadMusic({
+  formData,
+  musicFile,
+  musicBg,
+  form,
+  upload,
+  uploadImg,
+  formRef,
+});
+const beforeUpload = (file) => {};
+const checkMusicResource = (rule, value, callback) => {
+  if (musicFile.value.length) {
+    callback();
+  } else {
+    callback(new Error("请选择音乐文件"));
+  }
+};
+
+const rules = reactive({
+  musicName: [{ required: true, message: "请输入歌曲名称" }],
+  Singer: [{ required: true, message: "请输入歌手名字" }],
+  resource: [{ validator: checkMusicResource }],
+  zhuanji: [],
+});
+const asc = (uploadFile) => {
+  // const reader = new FileReader();
+  // const audio = new Audio();
+  // reader.onload = (e) => {
+  //   audio.src = e.target.result;
+  //   audio.addEventListener("canplay", () => {
+  //     form.duration = audio.duration;
+  //   });
+  // };
+  // reader.readAsDataURL(uploadFile.raw);
+};
 </script>
 <style scoped lang="less">
 .uploadMusic {

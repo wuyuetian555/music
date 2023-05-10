@@ -13,3 +13,7 @@ export const findMusicDetail = (ids) => {
 export const findMusicMv = (id) => {
   return request("/mv/url", "get", { id });
 };
+
+export const getWYYMusicFileBlob = ({ url }) => {
+  return request(url, "get", "", "blob", false);
+};
