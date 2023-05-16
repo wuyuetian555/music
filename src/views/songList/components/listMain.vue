@@ -10,28 +10,28 @@
 </template>
 
 <script>
-import { findDetailedRecommendSongList } from "@/api/musicList";
-import { reactive, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import SongListBody from "@/components/songListBody.vue";
-import useMusicControl from "@/hooks/useMusicControl";
-import usefIlterMusicData from "@/hooks/usefIlterMusicData";
+import { findDetailedRecommendSongList } from '@/api/musicList';
+import { reactive, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import SongListBody from '@/components/songListBody.vue';
+import useMusicControl from '@/hooks/useMusicControl';
+import usefIlterMusicData from '@/hooks/usefIlterMusicData';
 export default {
-  name: "ListMain",
+  name: 'ListMain',
   components: { SongListBody },
   setup() {
     const data = reactive([
       {
-        value: "歌 曲",
-        id: 1,
-      },
+        value: '歌 曲',
+        id: 1
+      }
     ]);
     const route = useRoute();
     const musicListData = reactive([]);
     const { playMusicList } = useMusicControl();
 
     onMounted(async () => {
-      var result = await findDetailedRecommendSongList(
+      let result = await findDetailedRecommendSongList(
         route.params.musiclistid
       );
       result = usefIlterMusicData(result.songs);
@@ -46,12 +46,10 @@ export default {
     return {
       data,
       musicListData,
-      handlePlayMusic,
+      handlePlayMusic
     };
-  },
+  }
 };
 </script>
 
-<style scoped lang="less">
-
-</style>
+<style scoped lang="less"></style>

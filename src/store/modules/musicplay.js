@@ -6,13 +6,13 @@ import {
 } from '@/api/music';
 import { filterTime } from '@/utils/usefilter';
 import Dialog from '@/components/UI/Dialog.js';
-import Message from '@/components/UI/message.js';
+
 import {
   getMyUploadMusicUrl,
   getMusicDetail,
   getMusicFileBlob
 } from '@/api/user.js';
-import { h } from 'vue';
+
 import { ElNotification } from 'element-plus';
 export default {
   namespaced: true,
@@ -25,7 +25,7 @@ export default {
           : {
               musicName: '听我想听',
               musicId: '',
-              musicMv: '', //正在播放的歌曲信息
+              musicMv: '',
               zhuanji: '',
               zhuanjiId: '',
               SingerId: '',
@@ -38,14 +38,14 @@ export default {
             : [],
           index: '',
           name: false
-        }, //播放队列中的所有歌曲
-        isPlay: false //是否播放
+        },
+        isPlay: false
       },
       personalMusic: {
         data: [],
         index: 0,
         name: true
-      }, //个性电台
+      },
       showLyric: false,
       showMusicList: false
     };
@@ -77,13 +77,13 @@ export default {
       }
     },
     getPlayMusic(state, musicId) {
-      let musicData = state.musicList;
+      const musicData = state.musicList;
       const index = musicData.data.data.findIndex((item) => {
         return item.musicId == musicId;
       });
       musicData.data.index = index;
 
-      for (var key in musicData.playingMusic) {
+      for (const key in musicData.playingMusic) {
         musicData.playingMusic[key] = musicData.data.data[index][key];
       }
       localStorage.setItem(
@@ -154,7 +154,7 @@ export default {
       await dispatch('user/getPlayedMusic', {}, { root: true });
     },
     async nextMusic({ state, dispatch }) {
-      let musicData = state.musicList.data;
+      const musicData = state.musicList.data;
       if (musicData.index + 1 == musicData.data.length) {
         musicData.index = -1;
       }
@@ -166,7 +166,7 @@ export default {
       }
     },
     async nextPersonalMusic({ state, dispatch, commit }) {
-      let musicData = state.musicList.data;
+      const musicData = state.musicList.data;
       if (musicData.data.length - 1 === musicData.index) {
         const musicDate = await dispatch('getPersonalMusic');
         musicData.data.push(...musicDate);
@@ -176,7 +176,7 @@ export default {
     },
 
     async lastMusic({ state, dispatch }) {
-      let musicData = state.musicList.data;
+      const musicData = state.musicList.data;
       if (musicData.index == 0) return;
       const lastMusicId = musicData.data[musicData.index - 1].musicId;
       const result = await dispatch('playMusic', lastMusicId);
@@ -185,7 +185,7 @@ export default {
       }
     },
     async lastPersonalMusic({ state, dispatch }) {
-      let musicData = state.musicList.data;
+      const musicData = state.musicList.data;
       if (musicData.index === 0) {
         return;
       }
@@ -206,7 +206,7 @@ export default {
         });
         return;
       }
-      let musicData = state.musicList.data;
+      const musicData = state.musicList.data;
       musicData.data = musicListData.filter((item) => {
         return !item.iscanPlay;
       });
@@ -230,7 +230,7 @@ export default {
         });
         return;
       }
-      let musicData = state.musicList.data;
+      const musicData = state.musicList.data;
       if (!musicData.name) {
         const index = musicData.index || 0;
         musicData.data.splice(index + 1, 0, song[0]);
@@ -259,14 +259,17 @@ export default {
         commit('playMusic', url);
         commit('getPlayMusic', musicId);
         await dispatch('user/getPlayedMusic', {}, { root: true });
-        getters['getMusicListData'].name &&
-          commit('editPersonalMusicIndex', getters['getMusicListData'].index);
+        const musicListData = getters.getMusicListData;
+        if (musicListData.name) {
+          commit('editPersonalMusicIndex', musicListData.index);
+        }
+
         return true;
       }
     },
     async musicisPlay({ dispatch }, musicId) {
       const url = await dispatch('getMusicUrl', musicId);
-      return url ? url : false;
+      return url || false;
     },
     async downloadMusic({ dispatch }, { musicId }) {
       let musicName, singer, url, response;
@@ -303,9 +306,9 @@ export default {
         response = await getWYYMusicFileBlob({ url });
       }
 
-      let blob = new Blob([response]);
-      let blobUrl = window.URL.createObjectURL(blob);
-      let a = document.createElement('a');
+      const blob = new Blob([response]);
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
       a.href = blobUrl;
       a.download = `${musicName}-${singer}.mp4`;
       a.click();

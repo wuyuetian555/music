@@ -16,13 +16,13 @@
 </template>
 
 <script>
-import SongList from "@/components/songListBody.vue";
-import { useStore } from "vuex";
-import { reactive, ref, toRefs, onActivated } from "vue";
-import { useRoute } from "vue-router";
-import useMusicControl from "@/hooks/useMusicControl";
+import SongList from '@/components/songListBody.vue';
+import { useStore } from 'vuex';
+import { reactive, ref, toRefs, onActivated } from 'vue';
+import { useRoute } from 'vue-router';
+import useMusicControl from '@/hooks/useMusicControl';
 export default {
-  name: "AllSongs",
+  name: 'AllSongs',
   components: { SongList },
   setup() {
     const store = useStore();
@@ -30,21 +30,21 @@ export default {
     let singerId = route.params.singerId;
     const data = reactive({
       request: {
-        order: "hot",
+        order: 'hot',
         limit: 30,
         offset: 0,
-        singerId: route.params.singerId,
+        singerId: route.params.singerId
       },
       musicListData: [],
       loading: false,
-      finished: false,
+      finished: false
     });
 
     const root = ref(null);
 
     const getData = async () => {
-      let res = await store.dispatch("singer/getSingerAllSongs", {
-        ...data.request,
+      const res = await store.dispatch('singer/getSingerAllSongs', {
+        ...data.request
       });
       data.request.offset += data.request.limit;
       data.musicListData.push(...res.songs);
@@ -74,9 +74,9 @@ export default {
       if (isExist != -1) {
         playMusic({ musicId: value.musicId });
       } else if (!song[0].iscanPlay) {
-        store.dispatch("musicplay/baseonSearchGetSongAddtoMusicList", {
+        store.dispatch('musicplay/baseonSearchGetSongAddtoMusicList', {
           song,
-          musicId: value.musicId,
+          musicId: value.musicId
         });
       }
     };
@@ -84,10 +84,10 @@ export default {
       if (route.params.singerId != singerId) {
         singerId = route.params.singerId;
         data.request = {
-          order: "hot",
+          order: 'hot',
           limit: 30,
           offset: 0,
-          singerId: route.params.singerId,
+          singerId: route.params.singerId
         };
         data.finished = false;
         data.musicListData = [];
@@ -97,9 +97,9 @@ export default {
       root,
       getMoreData,
       ...toRefs(data),
-      handleClick,
+      handleClick
     };
-  },
+  }
 };
 </script>
 

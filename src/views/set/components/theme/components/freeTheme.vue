@@ -70,20 +70,33 @@
           </div>
         </div>
       </div>
+      <div class="free-btn" @click="setTheme" data-theme="myTheme">
+        <i
+          class="iconfont icon-checkboxweixuanzhongxiao icon"
+          v-if="currentTheme != 'myTheme'"
+          data-theme="myTheme"
+        ></i>
+        <i
+          class="iconfont icon-danxuancheckbox icon"
+          v-else
+          data-theme="myTheme"
+        ></i>
+        <span data-theme="myTheme"> 自定义风格 </span>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed, onBeforeMount, reactive, toRefs, watch } from "vue";
-import { useStore } from "vuex";
-import { themes } from "@/theme/model";
-import { getHexString, getRgba, getColorAlpha } from "@/theme/theme";
-import AlphaProgress from "@/components/progress.vue";
+import { computed, onBeforeMount, reactive, toRefs, watch } from 'vue';
+import { useStore } from 'vuex';
+import { themes } from '@/theme/model';
+import { getHexString, getRgba, getColorAlpha } from '@/theme/theme';
+import AlphaProgress from '@/components/progress.vue';
 export default {
-  name: "FreeTheme",
+  name: 'FreeTheme',
   components: {
-    AlphaProgress,
+    AlphaProgress
   },
   setup() {
     const store = useStore();
@@ -92,11 +105,11 @@ export default {
     });
     const data = reactive({
       currentThemeDetail: {
-        primaryColor: "",
-        primaryTextColor: "",
-        highlightColor: "",
+        primaryColor: '',
+        primaryTextColor: '',
+        highlightColor: ''
       },
-      Alpha: {},
+      Alpha: {}
     });
     onBeforeMount(() => {
       data.currentThemeDetail = init(currentTheme.value).currentThemeDetail;
@@ -105,37 +118,45 @@ export default {
     watch(
       () => currentTheme.value,
       (newVal) => {
+        if (newVal != 'myTheme') return;
         data.currentThemeDetail = init(newVal).currentThemeDetail;
         data.Alpha = init(newVal).Alpha;
       }
     );
     const changTheme = () => {
       const color = getRgba({ ...data });
-      store.commit("user/setMyTheme", color);
+      store.commit('user/setMyTheme', color);
     };
     const init = (themeName) => {
-      if (themes[themeName]) {
+      if (themes[themeName] && !store.state.user.myThemeDetail) {
         return {
           currentThemeDetail: getHexString(themes[themeName]),
-          Alpha: getColorAlpha(themes[themeName]),
+          Alpha: getColorAlpha(themes[themeName])
         };
       } else {
         return {
           currentThemeDetail: getHexString(store.state.user.myThemeDetail),
-          Alpha: getColorAlpha(store.state.user.myThemeDetail),
+          Alpha: getColorAlpha(store.state.user.myThemeDetail)
         };
       }
     };
     const getProgressValue = () => {
       const color = getRgba({ ...data });
-      store.commit("user/setMyTheme", color);
+      store.commit('user/setMyTheme', color);
+    };
+    const setTheme = (e) => {
+      const targetTheme = e.target.dataset.theme;
+      if (targetTheme == currentTheme.value) return;
+      store.commit('user/setTheme', targetTheme);
     };
     return {
       ...toRefs(data),
       changTheme,
       getProgressValue,
+      currentTheme,
+      setTheme
     };
-  },
+  }
 };
 </script>
 
@@ -186,6 +207,19 @@ export default {
             margin-left: 10px;
           }
         }
+      }
+    }
+    .free-btn {
+      margin: auto;
+      cursor: pointer;
+      margin-right: 500px;
+      padding: 10px;
+      .icon {
+        font-size: 12px;
+        padding-right: 5px;
+      }
+      span {
+        font-size: 15px;
       }
     }
   }

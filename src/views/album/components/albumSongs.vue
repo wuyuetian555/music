@@ -9,16 +9,16 @@
 </template>
 
 <script>
-import SongList from "@/components/songListBody.vue";
-import useMusicControl from "@/hooks/useMusicControl";
+import SongList from '@/components/songListBody.vue';
+import useMusicControl from '@/hooks/useMusicControl';
 export default {
-  name: "AlbumSongs",
+  name: 'AlbumSongs',
   components: { SongList },
   props: {
     data: {
       type: Array,
-      default: [],
-    },
+      default: () => []
+    }
   },
   setup() {
     const { playMusicList } = useMusicControl();
@@ -26,9 +26,9 @@ export default {
       playMusicList({ musicListData, musicId });
     };
     return {
-      handleClick,
+      handleClick
     };
-  },
+  }
 };
 </script>
 

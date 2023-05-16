@@ -34,21 +34,21 @@
 </template>
 
 <script>
-import { findSingerDesc } from "@/api/singer";
-import { useRoute } from "vue-router";
-import { reactive, toRefs, ref, nextTick, onMounted, onActivated } from "vue";
+import { findSingerDesc } from '@/api/singer';
+import { useRoute } from 'vue-router';
+import { reactive, toRefs, ref, nextTick, onMounted, onActivated } from 'vue';
 
 export default {
-  name: "SingerDetailHeader",
+  name: 'SingerDetailHeader',
   setup() {
     const route = useRoute();
     let singerId = route.params.singerId;
     const data = reactive({
-      singerName: "",
-      singerIntroduce: "",
-      singerBg: "",
+      singerName: '',
+      singerIntroduce: '',
+      singerBg: '',
       showMore: false,
-      showDialog: false,
+      showDialog: false
     });
     const textarea = ref(null);
 
@@ -73,9 +73,9 @@ export default {
     });
     return {
       ...toRefs(data),
-      textarea,
+      textarea
     };
-  },
+  }
 };
 </script>
 

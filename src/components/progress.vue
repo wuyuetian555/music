@@ -18,37 +18,37 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, computed } from 'vue';
 export default {
-  name: "MusicProgress",
-  emit: ["clickProgress"],
+  name: 'MusicProgress',
+  emit: ['clickProgress'],
   props: {
     currentTime: {
       type: Number,
-      default: 0,
+      default: 0
     },
     duration: {
       type: Number,
-      default: 1,
+      default: 1
     },
     width: {
-      default: "100",
+      default: '100'
     },
     showTitle: {
-      default: false,
-    },
+      default: false
+    }
   },
   setup(props, { emit }) {
     const el = ref(null);
     const el2 = ref(null);
     const clickProgress = (e) => {
       if (e.target.dataset.bar) return;
-      el2.value.style.width = e.offsetX + "px";
-      emit("update:currentTime", (e.offsetX / props.width) * props.duration);
-      emit("clickProgress");
+      el2.value.style.width = e.offsetX + 'px';
+      emit('update:currentTime', (e.offsetX / props.width) * props.duration);
+      emit('clickProgress');
     };
     const currentWidth = computed(() => {
-      return (props.width / props.duration) * props.currentTime + "px";
+      return (props.width / props.duration) * props.currentTime + 'px';
     });
     const dragProgressBar = (e) => {
       let i;
@@ -60,22 +60,22 @@ export default {
         } else if (current < 0) {
           current = 0;
         }
-        el2.value.style.width = current + "px";
-        emit("update:currentTime", (current / props.width) * props.duration);
+        el2.value.style.width = current + 'px';
+        emit('update:currentTime', (current / props.width) * props.duration);
         if (!i) {
           i = setTimeout(() => {
-            emit("clickProgress");
+            emit('clickProgress');
             i = null;
           }, 200);
         }
       };
       const moveup = () => {
-        document.removeEventListener("mousemove", move);
+        document.removeEventListener('mousemove', move);
         document.onselectstart = null;
-        document.removeEventListener("mouseup", moveup);
+        document.removeEventListener('mouseup', moveup);
       };
-      document.addEventListener("mousemove", move);
-      document.addEventListener("mouseup", moveup);
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', moveup);
       document.onselectstart = function () {
         return false;
       };
@@ -85,9 +85,9 @@ export default {
       el2,
       clickProgress,
       currentWidth,
-      dragProgressBar,
+      dragProgressBar
     };
-  },
+  }
 };
 </script>
 

@@ -1,13 +1,12 @@
 <template>
   <teleport to="body">
-    <div class="music-mask" @click="hide" >
+    <div class="music-mask" @click="hide">
       <slot></slot>
     </div>
   </teleport>
 </template>
 
 <script>
-import { ref } from 'vue'
 export default {
   name: 'MusicMask',
   props: {
@@ -16,13 +15,13 @@ export default {
       default: false
     }
   },
-  setup (props, { emit }) {
+  setup(props, { emit }) {
     const hide = () => {
-      emit('update:modelValue', !props.modelValue)
-    }
-    return { hide }
+      emit('update:modelValue', !props.modelValue);
+    };
+    return { hide };
   }
-}
+};
 </script>
 
 <style scoped lang="less">

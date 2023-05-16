@@ -23,18 +23,18 @@
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
-import MusicButton from "./music-button.vue";
+import { onMounted, ref } from 'vue';
+import MusicButton from './music-button.vue';
 export default {
-  name: "MusicConfirm",
+  name: 'MusicConfirm',
   components: { MusicButton },
   props: {
     cancelCallback: {
-      type: Function,
+      type: Function
     },
     submitCallback: {
-      type: Function,
-    },
+      type: Function
+    }
   },
   setup(props) {
     const fade = ref(false);
@@ -53,7 +53,7 @@ export default {
       props.submitCallback();
     };
     return { clearConfirm, fade, cancel, submit };
-  },
+  }
 };
 </script>
 

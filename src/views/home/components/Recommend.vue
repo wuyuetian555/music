@@ -64,12 +64,9 @@
 import { useStore } from 'vuex';
 import { onMounted, reactive, toRefs, computed } from 'vue';
 import useMusicControl from '@/hooks/useMusicControl';
-import isLikeSongVue from '@/components/isLikeSong.vue';
+
 export default {
   name: 'Recommend',
-  components: {
-    isLikeSongVue
-  },
   setup() {
     const store = useStore();
     const personalMusic = reactive({
@@ -80,10 +77,10 @@ export default {
         return store.state.musicplay.personalMusic.index || 0;
       }),
       isPlay: computed(() => {
-        return store.state.musicplay.musicList.isPlay &&
+        return (
+          store.state.musicplay.musicList.isPlay &&
           store.state.musicplay.musicList.data.name
-          ? true
-          : false;
+        );
       })
     });
 

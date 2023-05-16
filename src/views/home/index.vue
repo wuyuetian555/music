@@ -6,18 +6,18 @@
 </template>
 
 <script>
-import Recommend from "./components/Recommend.vue";
-import RecommendList from "./components/RecommendList.vue";
-import useScrollTop from "@/hooks/useScrollTop";
+import Recommend from './components/Recommend.vue';
+import RecommendList from './components/RecommendList.vue';
+import useScrollTop from '@/hooks/useScrollTop';
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     Recommend,
-    RecommendList,
+    RecommendList
   },
   setup() {
     useScrollTop();
-  },
+  }
 };
 </script>
 

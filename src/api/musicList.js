@@ -1,5 +1,5 @@
-import request from "@/utils/request";
-//获取某歌单全部歌曲
+import request from '@/utils/request';
+
 export const findDetailedRecommendSongList = (id) => {
-    return request("/playlist/track/all", "get", { id });
-  };
+  return request('/playlist/track/all', 'get', { id });
+};

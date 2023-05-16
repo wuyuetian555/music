@@ -9,8 +9,8 @@
       <i class="iconfont icon-yinleliebiao musicList"></i>
       <i class="songCount ellipsis"
         >{{
-          $store.getters["musicplay/getMusicListLength"] != 0
-            ? $store.getters["musicplay/getMusicListLength"]
+          $store.getters['musicplay/getMusicListLength'] != 0
+            ? $store.getters['musicplay/getMusicListLength']
             : null
         }}
       </i>
@@ -20,23 +20,23 @@
 </template>
 
 <script>
-import { computed, ref } from "vue";
-import musicList from "@/components/player/components/music-list.vue";
+import { computed, ref } from 'vue';
+import musicList from '@/components/player/components/music-list.vue';
 
-import { useStore } from "vuex";
+import { useStore } from 'vuex';
 export default {
-  name: "MusicTime",
+  name: 'MusicTime',
   components: { musicList },
   props: {
     filtercurrentTime: {
-      default: "00:00",
+      default: '00:00'
     },
     duration: {
-      default: "00:00",
+      default: '00:00'
     },
     showMusicList: {
-      default: true,
-    },
+      default: true
+    }
   },
   setup(props) {
     const store = useStore();
@@ -46,9 +46,9 @@ export default {
     const showLyric = ref(false);
     return {
       showLyric,
-      show,
+      show
     };
-  },
+  }
 };
 </script>
 

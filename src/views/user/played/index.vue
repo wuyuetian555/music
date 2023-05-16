@@ -23,21 +23,21 @@
 </template>
 
 <script>
-import songlist from "@/components/songListBody.vue";
-import { computed, reactive, ref } from "vue";
-import useMusicControl from "@/hooks/useMusicControl";
-import deletesonglist from "@/components/deleteSongList.vue";
-import { useStore } from "vuex";
-import useScrollTop from "@/hooks/useScrollTop";
-import topNav from "./components/topNav.vue";
+import songlist from '@/components/songListBody.vue';
+import { computed, ref } from 'vue';
+import useMusicControl from '@/hooks/useMusicControl';
+import deletesonglist from '@/components/deleteSongList.vue';
+import { useStore } from 'vuex';
+import useScrollTop from '@/hooks/useScrollTop';
+import topNav from './components/topNav.vue';
 export default {
-  name: "Played",
+  name: 'Played',
   components: { songlist, deletesonglist, topNav },
   setup() {
     const show = ref(true);
     const store = useStore();
 
-    let playedMusic = computed(() => {
+    const playedMusic = computed(() => {
       return store.state.user.playedMusic;
     });
 
@@ -46,10 +46,10 @@ export default {
       playMusicList({ musicListData, musicId });
     };
     const deletSongList = (songList) => {
-      store.commit("user/deleteAllPlayedMusic", { songList });
+      store.commit('user/deleteAllPlayedMusic', { songList });
     };
     const deleteSong = ({ musicId }) => {
-      store.commit("user/deleteOneSong", { musicId });
+      store.commit('user/deleteOneSong', { musicId });
     };
     useScrollTop();
     return {
@@ -57,9 +57,9 @@ export default {
       handlePlayMusic,
       show,
       deletSongList,
-      deleteSong,
+      deleteSong
     };
-  },
+  }
 };
 </script>
 

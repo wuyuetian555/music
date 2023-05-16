@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import { findMusicMv } from "@/api/music";
-import { useRoute } from "vue-router";
-import { ref } from "vue";
-import useMusicControl from "@/hooks/useMusicControl";
+import { findMusicMv } from '@/api/music';
+import { useRoute } from 'vue-router';
+import { ref } from 'vue';
+import useMusicControl from '@/hooks/useMusicControl';
 export default {
-  name: "MV",
+  name: 'MV',
   setup() {
     const route = useRoute();
     const mvId = route.params.mvId;
@@ -27,7 +27,7 @@ export default {
       src.value = data.url;
     });
     return { src };
-  },
+  }
 };
 </script>
 

@@ -64,7 +64,6 @@
           :auto-upload="false"
           :before-upload="beforeUpload"
           :http-request="startUploadMusic"
-          :on-change="asc"
           accept=".MP3,.WMA,.WAV,.APE,.FLAC,.OGG,.AAC,.m4a"
         >
           <template #trigger>
@@ -87,14 +86,14 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
-import { Delete, Plus, ZoomIn } from "@element-plus/icons-vue";
-import { handleImg, handleMusic, uploadMusic } from "./index";
-import { ref } from "vue";
+import { reactive, ref } from 'vue';
+import { Delete, Plus, ZoomIn } from '@element-plus/icons-vue';
+import { handleImg, handleMusic, uploadMusic } from './index';
+
 const form = reactive({
-  musicName: "",
-  Singer: "",
-  zhuanji: "",
+  musicName: '',
+  Singer: '',
+  zhuanji: ''
 });
 const formRef = ref();
 const upload = ref();
@@ -102,11 +101,12 @@ const uploadImg = ref();
 const musicFile = ref([]);
 const musicBg = ref([]);
 const formData = new FormData();
+let loading;
 const {
   dialogImageUrl,
   dialogVisible,
   handleRemove,
-  handlePictureCardPreview,
+  handlePictureCardPreview
 } = handleImg(musicBg);
 const { handleExceed } = handleMusic(upload);
 const { submitUpload, startUploadMusic } = uploadMusic({
@@ -117,33 +117,22 @@ const { submitUpload, startUploadMusic } = uploadMusic({
   upload,
   uploadImg,
   formRef,
+  loading
 });
 const beforeUpload = (file) => {};
 const checkMusicResource = (rule, value, callback) => {
   if (musicFile.value.length) {
     callback();
   } else {
-    callback(new Error("请选择音乐文件"));
+    callback(new Error('请选择音乐文件'));
   }
 };
 
 const rules = reactive({
-  musicName: [{ required: true, message: "请输入歌曲名称" }],
-  Singer: [{ required: true, message: "请输入歌手名字" }],
-  resource: [{ validator: checkMusicResource }],
-  zhuanji: [],
+  musicName: [{ required: true, message: '请输入歌曲名称' }],
+  Singer: [{ required: true, message: '请输入歌手名字' }],
+  resource: [{ validator: checkMusicResource }]
 });
-const asc = (uploadFile) => {
-  // const reader = new FileReader();
-  // const audio = new Audio();
-  // reader.onload = (e) => {
-  //   audio.src = e.target.result;
-  //   audio.addEventListener("canplay", () => {
-  //     form.duration = audio.duration;
-  //   });
-  // };
-  // reader.readAsDataURL(uploadFile.raw);
-};
 </script>
 <style scoped lang="less">
 .uploadMusic {

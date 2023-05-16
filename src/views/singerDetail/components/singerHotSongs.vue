@@ -9,20 +9,20 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { useRoute } from "vue-router";
-import SongList from "@/components/songListBody.vue";
-import { toRefs, reactive, onActivated, onBeforeMount } from "vue";
-import useMusicControl from "@/hooks/useMusicControl";
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import SongList from '@/components/songListBody.vue';
+import { toRefs, reactive, onActivated, onBeforeMount } from 'vue';
+import useMusicControl from '@/hooks/useMusicControl';
 export default {
-  name: "SingerHotSongs",
+  name: 'SingerHotSongs',
   components: { SongList },
   setup() {
     const store = useStore();
     const route = useRoute();
     let singerId = route.params.singerId;
     const data = reactive({
-      musicListData: [],
+      musicListData: []
     });
 
     const { playMusicList } = useMusicControl();
@@ -32,8 +32,8 @@ export default {
 
     const init = () => {
       store
-        .dispatch("singer/getSingerHotSongs", {
-          singerId: route.params.singerId,
+        .dispatch('singer/getSingerHotSongs', {
+          singerId: route.params.singerId
         })
         .then((res) => {
           data.musicListData = res;
@@ -49,7 +49,7 @@ export default {
       }
     });
     return { ...toRefs(data), handleClick };
-  },
+  }
 };
 </script>
 

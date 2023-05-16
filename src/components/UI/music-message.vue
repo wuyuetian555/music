@@ -6,14 +6,14 @@
   </Transition>
 </template>
 <script>
-import { onMounted, ref } from "vue";
+import { onMounted, ref } from 'vue';
 export default {
-  name: "MusicMessage",
+  name: 'MusicMessage',
   props: {
     text: {
       type: String,
-      default: "一首歌曲无法播放，已自动播放下一首",
-    },
+      default: '一首歌曲无法播放，已自动播放下一首'
+    }
   },
   setup() {
     const visible = ref(false);
@@ -21,7 +21,7 @@ export default {
       visible.value = true;
     });
     return { visible };
-  },
+  }
 };
 </script>
 <style scoped lang="less">

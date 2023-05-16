@@ -32,11 +32,11 @@
 </template>
 
 <script>
-import { computed, ref, watch, toRefs, reactive, onActivated } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { computed, ref, watch, toRefs, reactive, onActivated } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 export default {
-  nam: "RecommendList",
+  nam: 'RecommendList',
   setup() {
     const store = useStore();
     const route = useRoute();
@@ -46,23 +46,23 @@ export default {
       request: {
         limit: 15,
         offset: 0,
-        id: route.params.singerId,
+        id: route.params.singerId
       },
       loading: false,
       finished: false,
       root: null,
-      albumData: [],
+      albumData: []
     });
 
-    let isShowAside = computed(() => {
+    const isShowAside = computed(() => {
       return store.state.user.showAside;
     });
-    const gridColums = ref("repeat(6, 1fr)");
+    const gridColums = ref('repeat(6, 1fr)');
 
     const getMoreData = async () => {
       data.loading = true;
-      const result = await store.dispatch("singer/getSingerAlbum", {
-        ...data.request,
+      const result = await store.dispatch('singer/getSingerAlbum', {
+        ...data.request
       });
       data.albumData.push(...result.data);
       data.request.offset += data.request.limit;
@@ -73,10 +73,10 @@ export default {
       const id = e.target.dataset.albumid;
       if (id) {
         router.push({
-          name: "Album",
+          name: 'Album',
           params: {
-            albumId: id,
-          },
+            albumId: id
+          }
         });
       }
     };
@@ -86,7 +86,7 @@ export default {
         data.request = {
           limit: 15,
           offset: 0,
-          id: route.params.singerId,
+          id: route.params.singerId
         };
         data.finished = false;
         data.albumData = [];
@@ -95,7 +95,7 @@ export default {
     watch(
       isShowAside,
       (newVal) => {
-        gridColums.value = !newVal ? "repeat(6, 1fr)" : "repeat(5, 1fr)";
+        gridColums.value = !newVal ? 'repeat(6, 1fr)' : 'repeat(5, 1fr)';
       },
       { immediate: true }
     );
@@ -103,9 +103,9 @@ export default {
       gridColums,
       ...toRefs(data),
       getMoreData,
-      goAlbumDetail,
+      goAlbumDetail
     };
-  },
+  }
 };
 </script>
 

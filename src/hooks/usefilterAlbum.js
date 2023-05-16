@@ -4,20 +4,20 @@ export default (obj) => {
       albumName: item.name,
       publishTime: filterTime(item.publishTime),
       albumId: item.id,
-      albumBg: item.blurPicUrl,
+      albumBg: item.blurPicUrl
     };
   });
   return {
     code: obj.code,
     data: newArr,
-    more: obj.more,
+    more: obj.more
   };
 };
 
 export const filterTime = (time) => {
-  let data = new Date(time);
-  let year = data.getFullYear();
-  let month = data.getMonth() + 1;
-  let day = data.getDate();
+  const data = new Date(time);
+  const year = data.getFullYear();
+  const month = data.getMonth() + 1;
+  const day = data.getDate();
   return `${year}-${month}-${day}`;
 };

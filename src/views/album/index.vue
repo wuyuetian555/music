@@ -38,32 +38,32 @@
 </template>
 
 <script>
-import { findSingerDetailAlbum } from "@/api/singer";
-import usefIlterMusicData from "@/hooks/usefIlterMusicData";
-import { filterTime } from "@/hooks/usefilterAlbum";
-import { useRoute } from "vue-router";
-import { reactive, toRefs } from "vue";
-import { tabsData } from "./index";
-import AlbumSongs from "./components/albumSongs.vue";
-import AlbumDesc from "./components/albumDesc.vue";
+import { findSingerDetailAlbum } from '@/api/singer';
+import usefIlterMusicData from '@/hooks/usefIlterMusicData';
+import { filterTime } from '@/hooks/usefilterAlbum';
+import { useRoute } from 'vue-router';
+import { reactive, toRefs } from 'vue';
+import { tabsData } from './index';
+import AlbumSongs from './components/albumSongs.vue';
+import AlbumDesc from './components/albumDesc.vue';
 export default {
-  name: "Album",
+  name: 'Album',
   components: {
     AlbumSongs,
-    AlbumDesc,
+    AlbumDesc
   },
   setup() {
     const route = useRoute();
     const data = reactive({
       albumDesc: {
-        name: "",
-        desc: "",
-        singerName: "",
-        publishTime: "",
-        bg: "",
+        name: '',
+        desc: '',
+        singerName: '',
+        publishTime: '',
+        bg: ''
       },
       albumMusic: [],
-      activeIndex: 0,
+      activeIndex: 0
     });
     findSingerDetailAlbum(route.params.albumId).then(({ album, songs }) => {
       data.albumDesc.name = album.name;
@@ -76,9 +76,9 @@ export default {
 
     return {
       tabsData,
-      ...toRefs(data),
+      ...toRefs(data)
     };
-  },
+  }
 };
 </script>
 
@@ -102,8 +102,9 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      .album-singerName,.album-publishTime{
-        margin-left:5px;
+      .album-singerName,
+      .album-publishTime {
+        margin-left: 5px;
       }
       .play-btn {
         .btn,

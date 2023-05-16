@@ -16,16 +16,15 @@
 </template>
 
 <script setup>
-import Register from "./components/register.vue";
-import Login from "./components/login.vue";
-import { ref } from "vue";
+import Register from './components/register.vue';
+import Login from './components/login.vue';
+import { ref, defineProps } from 'vue';
 const showLogin = ref(true);
 const props = defineProps({
   show: {
-    type: Boolean,
-  },
+    type: Boolean
+  }
 });
-const emit = defineEmits(["update:show"]);
 </script>
 
 <style scoped lang="less">

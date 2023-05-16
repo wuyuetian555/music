@@ -67,7 +67,7 @@ export default {
     transform: translateY(172px);
     background-color: @topColor;
     z-index: 1;
-    background-image: url('@/assets/images/-2300cdf2406380eb.jpg');
+    background-image: url('@/assets/images/1.jpg');
     background-size: cover;
     background-position: center -200px;
   }

@@ -32,37 +32,37 @@
 </template>
 
 <script>
-import { findsearchSuggest } from "@/api/search";
-import { reactive, watch, onMounted, toRefs } from "vue";
-import useDebounce from "@/hooks/useDebounce";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { findsearchSuggest } from '@/api/search';
+import { reactive, watch, onMounted, toRefs } from 'vue';
+import useDebounce from '@/hooks/useDebounce';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 export default {
-  name: "SearchHeader",
+  name: 'SearchHeader',
   props: {
     width: {
-      default: "260px",
+      default: '260px'
     },
     height: {
-      default: "40px",
+      default: '40px'
     },
     suggestWidth: {
-      default: "479px",
-    },
+      default: '479px'
+    }
   },
   setup() {
     const data = reactive({
       input: null,
       list: null,
-      searchValue: "",
-      searchSuggest: [],
+      searchValue: '',
+      searchSuggest: []
     });
     const store = useStore();
     const router = useRouter();
     onMounted(() => {
       data.input.onfocus = () => {
-        data.list.style.height = "auto";
+        data.list.style.height = 'auto';
       };
       data.input.onblur = () => {
         setTimeout(() => {
@@ -72,7 +72,7 @@ export default {
     });
 
     const getSearchSuggest = () => {
-      data.searchValue.trim() != "" &&
+      data.searchValue.trim() != '' &&
         findsearchSuggest({ keywords: data.searchValue }).then((res) => {
           data.searchSuggest = res.result.songs.slice(0, 10);
         });
@@ -84,28 +84,28 @@ export default {
       searchSongs(data.searchValue);
     };
     const searchSongs = async (value) => {
-      if (value.trim() == "") return;
+      if (value.trim() == '') return;
       const result = await findsearchSuggest({ keywords: value, limit: 55 });
       data.input.blur();
-      store.commit("search/getSearchList", { songList: result.result.songs });
+      store.commit('search/getSearchList', { songList: result.result.songs });
       data.list.style.height = 0;
-      store.commit("search/editActiveIndex", { activeIndex: 0 });
-      store.commit("search/getSearchValue", { searchValue: value });
-      router.push("/search");
+      store.commit('search/editActiveIndex', { activeIndex: 0 });
+      store.commit('search/getSearchValue', { searchValue: value });
+      router.push('/search');
     };
     watch(
       () => data.searchValue,
       (newVal) => {
-        newVal.trim() == "" ? (data.searchSuggest = []) : null;
+        newVal.trim() == '' && (data.searchSuggest = []);
         debounceSearch();
       }
     );
     return {
       handleClick,
       ...toRefs(data),
-      searchSongs,
+      searchSongs
     };
-  },
+  }
 };
 </script>
 

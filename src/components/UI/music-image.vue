@@ -4,24 +4,24 @@
 </template>
 
 <script>
-import { findMusicDetail } from "@/api/music";
-import { watch } from "vue";
-import { useStore } from "vuex";
+import { findMusicDetail } from '@/api/music';
+import { watch } from 'vue';
+import { useStore } from 'vuex';
 export default {
-  name: "MusicImage",
+  name: 'MusicImage',
   props: {
-    src: { default: "" },
+    src: { default: '' }
   },
   setup(props) {
     const store = useStore();
-    const musicInfo = store.getters["musicplay/getPlayingMusic"];
+    const musicInfo = store.getters['musicplay/getPlayingMusic'];
     watch(
       [() => musicInfo.musicId, () => musicInfo.musicBg],
       (newVal) => {
         if (musicInfo.musicBg || !musicInfo.musicId) {
           return;
         }
-        if (newVal[0].toString().includes("th")) {
+        if (newVal[0].toString().includes('th')) {
           musicInfo.musicBg = null;
         } else {
           findMusicDetail(newVal[0]).then((res) => {
@@ -30,10 +30,10 @@ export default {
         }
       },
       {
-        immediate: true,
+        immediate: true
       }
     );
-  },
+  }
 };
 </script>
 

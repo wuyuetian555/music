@@ -64,35 +64,35 @@
 </template>
 
 <script setup>
-import { reactive, ref, onUnmounted } from "vue";
-import { UserFilled, Lock, Message } from "@element-plus/icons-vue";
-import { register, sendEmail } from "@/api/user";
-import { ElMessage } from "element-plus";
-import { validator } from "./validator";
+import { reactive, ref, onUnmounted, defineEmits, defineProps } from 'vue';
+import { Lock, Message } from '@element-plus/icons-vue';
+import { register, sendEmail } from '@/api/user';
+import { ElMessage } from 'element-plus';
+import { validator } from './validator';
 
-const emit = defineEmits(["update:showLogin"]);
+const emit = defineEmits(['update:showLogin']);
 const props = defineProps({
   showLogin: {
-    type: Boolean,
-  },
+    type: Boolean
+  }
 });
 const ruleFormRef = ref();
-const labelPosition = ref("right");
+const labelPosition = ref('right');
 const isDisabled = ref(false);
 const time = ref(60);
 let timer;
 const formLabelAlign = reactive({
-  password: "",
-  checkPassword: "",
-  email: "",
-  captcha: "",
-  emailStatus: false,
+  password: '',
+  checkPassword: '',
+  email: '',
+  captcha: '',
+  emailStatus: false
 });
 const {
   validatePassword,
   validateCheckPassword,
   validateEmail,
-  validateCaptcha,
+  validateCaptcha
 } = validator(formLabelAlign);
 
 const getCaptcha = async (ruleFormRef) => {
@@ -100,7 +100,7 @@ const getCaptcha = async (ruleFormRef) => {
     getEmailCode();
     return;
   }
-  ruleFormRef.validateField(["email"], async (valid) => {
+  ruleFormRef.validateField(['email'], async (valid) => {
     if (valid) {
       await getEmailCode();
     }
@@ -109,7 +109,6 @@ const getCaptcha = async (ruleFormRef) => {
 const getEmailCode = async () => {
   isDisabled.value = true;
   timer = setInterval(() => {
-    console.log(555);
     time.value--;
     if (time.value == 0) {
       time.value = 60;
@@ -118,18 +117,17 @@ const getEmailCode = async () => {
     }
   }, 1000);
   const { status } = await sendEmail({ email: formLabelAlign.email });
-  status == 200
-    ? ElMessage({
-        message: "验证码已发送。",
-        type: "success",
-      })
-    : null;
+  status == 200 &&
+    ElMessage({
+      message: '验证码已发送。',
+      type: 'success'
+    });
 };
 const rules = reactive({
-  password: [{ validator: validatePassword, trigger: "blur" }],
-  checkPassword: [{ validator: validateCheckPassword, trigger: "blur" }],
-  email: [{ validator: validateEmail, trigger: "blur" }],
-  captcha: [{ validator: validateCaptcha, trigger: "blur" }],
+  password: [{ validator: validatePassword, trigger: 'blur' }],
+  checkPassword: [{ validator: validateCheckPassword, trigger: 'blur' }],
+  email: [{ validator: validateEmail, trigger: 'blur' }],
+  captcha: [{ validator: validateCaptcha, trigger: 'blur' }]
 });
 const submitForm = async (ruleFormRef) => {
   if (!ruleFormRef) return;
@@ -138,20 +136,20 @@ const submitForm = async (ruleFormRef) => {
       const { status, errors } = await register({
         password: formLabelAlign.password,
         email: formLabelAlign.email,
-        captcha: formLabelAlign.captcha,
+        captcha: formLabelAlign.captcha
       });
 
       if (status == 200) {
         ruleFormRef.resetFields();
         ElMessage({
-          message: "恭喜您，账号注册成功。",
-          type: "success",
+          message: '恭喜您，账号注册成功。',
+          type: 'success'
         });
-        emit("update:showLogin", !props.showLogin);
+        emit('update:showLogin', !props.showLogin);
       } else {
         ElMessage({
           message: errors,
-          type: "error",
+          type: 'error'
         });
       }
     }
@@ -171,7 +169,7 @@ onUnmounted(() => {
   height: 350px;
 
   h1 {
-    font-family: Georgia, "Times New Roman", Times, serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 32px;
   }
 

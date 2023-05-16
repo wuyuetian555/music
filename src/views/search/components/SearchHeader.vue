@@ -27,30 +27,30 @@
 </template>
 
 <script>
-import { reactive, watch, onMounted, toRefs, computed } from "vue";
-import useDebounce from "@/hooks/useDebounce";
-import { useStore } from "vuex";
+import { reactive, watch, onMounted, toRefs, computed } from 'vue';
+import useDebounce from '@/hooks/useDebounce';
+import { useStore } from 'vuex';
 export default {
-  name: "SearchHeader",
+  name: 'SearchHeader',
   setup() {
     const data = reactive({
       input: null,
       list: null,
-      searchSuggest: [],
+      searchSuggest: []
     });
     const searchValue = computed({
       get() {
         return store.state.search.searchValue;
       },
       set(val) {
-        store.commit("search/getSearchValue", { searchValue: val });
-      },
+        store.commit('search/getSearchValue', { searchValue: val });
+      }
     });
     const store = useStore();
     onMounted(() => {
       data.input.focus();
       data.input.onfocus = () => {
-        data.list.style.height = "auto";
+        data.list.style.height = 'auto';
       };
       data.input.onblur = () => {
         setTimeout(() => {
@@ -60,8 +60,8 @@ export default {
     });
 
     const getSearchSuggest = async () => {
-      if (searchValue.value == "") return;
-      const songs = await store.dispatch("search/searchWYYSongsSuggest");
+      if (searchValue.value == '') return;
+      const songs = await store.dispatch('search/searchWYYSongsSuggest');
       data.searchSuggest = songs;
     };
     const debounceSearch = useDebounce(getSearchSuggest, 500);
@@ -71,15 +71,15 @@ export default {
       searchSongs(searchValue.value);
     };
     const searchSongs = async (value) => {
-      if (value.trim() == "") return;
-      await store.dispatch("search/searchWYYSongs", { keywords: value });
+      if (value.trim() == '') return;
+      await store.dispatch('search/searchWYYSongs', { keywords: value });
       data.input.blur();
       data.list.style.height = 0;
     };
     watch(
       () => searchValue.value,
       (newVal) => {
-        newVal.trim() == "" ? (data.searchSuggest = []) : null;
+        data.searchSuggest = newVal.trim() == '' ? [] : data.searchSuggest;
         debounceSearch();
       }
     );
@@ -87,9 +87,9 @@ export default {
       handleClick,
       ...toRefs(data),
       searchSongs,
-      searchValue,
+      searchValue
     };
-  },
+  }
 };
 </script>
 

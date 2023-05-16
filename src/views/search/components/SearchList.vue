@@ -29,14 +29,14 @@
 </template>
 
 <script>
-import { computed, ref, watch } from "vue";
-import songlistbody from "@/components/songListBody.vue";
-import { useStore } from "vuex";
-import useMusicControl from "@/hooks/useMusicControl";
-import { tabsDate } from "./index";
+import { computed, ref, watch } from 'vue';
+import songlistbody from '@/components/songListBody.vue';
+import { useStore } from 'vuex';
+import useMusicControl from '@/hooks/useMusicControl';
+import { tabsDate } from './index';
 
 export default {
-  name: "SearchList",
+  name: 'SearchList',
   components: { songlistbody },
   setup() {
     const store = useStore();
@@ -65,18 +65,18 @@ export default {
       if (isExist != -1) {
         playMusic({ musicId: value.musicId });
       } else if (!song[0].iscanPlay) {
-        store.dispatch("musicplay/baseonSearchGetSongAddtoMusicList", {
+        store.dispatch('musicplay/baseonSearchGetSongAddtoMusicList', {
           song,
-          musicId: value.musicId,
+          musicId: value.musicId
         });
       }
     };
     const changeTabs = async (activeIndex) => {
-      store.commit("search/editActiveIndex", { activeIndex: activeIndex.id });
+      store.commit('search/editActiveIndex', { activeIndex: activeIndex.id });
       if (activeIndex.id == 1) {
-        store.dispatch("search/searchSongsRequest");
+        store.dispatch('search/searchSongsRequest');
       } else {
-        await store.dispatch("search/searchWYYSongs", { keywords: "" });
+        await store.dispatch('search/searchWYYSongs', { keywords: '' });
       }
     };
     return {
@@ -84,9 +84,9 @@ export default {
       musicListData,
       handlePlayMusic,
       activeIndex,
-      changeTabs,
+      changeTabs
     };
-  },
+  }
 };
 </script>
 

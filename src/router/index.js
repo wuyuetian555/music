@@ -1,150 +1,149 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import store from "../store";
-const Layout = () => import("../views/Layout.vue");
-const Home = () => import("../views/home/index.vue");
-const SongList = () => import("../views/songList/index.vue");
-const Search = () => import("../views/search");
-const Like = () => import("../views/user/like");
-const Played = () => import("../views/user/played");
-const UserSongList = () => import("../views/user/songlist");
-const SingerList = () => import("../views/singer/index.vue");
-const SingerDetail = () => import("../views/singerDetail/index.vue");
-const Album = () => import("../views/album/index.vue");
-const Mv = () => import("../views/mv/index.vue");
-const Set = () => import("../views/set/index.vue");
-const Upload = () => import("../views/upload/index.vue");
+import { createRouter, createWebHashHistory } from 'vue-router';
+import store from '../store';
+import loginValidator from './loginValidator';
+const Layout = () => import('../views/Layout.vue');
+const Home = () => import('../views/home/index.vue');
+const SongList = () => import('../views/songList/index.vue');
+const Search = () => import('../views/search');
+const Like = () => import('../views/user/like');
+const Played = () => import('../views/user/played');
+const UserSongList = () => import('../views/user/songlist');
+const SingerList = () => import('../views/singer/index.vue');
+const SingerDetail = () => import('../views/singerDetail/index.vue');
+const Album = () => import('../views/album/index.vue');
+const Mv = () => import('../views/mv/index.vue');
+const Set = () => import('../views/set/index.vue');
+const Upload = () => import('../views/upload/index.vue');
 const routes = [
   {
-    path: "/",
+    path: '/',
     component: Layout,
-    redirect: "/home",
+    redirect: '/home',
     children: [
       {
-        path: "/home",
+        path: '/home',
         component: Home,
-        name: "Home",
+        name: 'Home',
         meta: {
           keepAlive: true,
-          showDivDom: true,
-        },
+          showDivDom: true
+        }
       },
       {
-        path: "/songList/:musiclistid",
+        path: '/songList/:musiclistid',
         component: SongList,
-        name: "SongList",
+        name: 'SongList',
         meta: {
-          keepAlive: false,
-        },
+          keepAlive: false
+        }
       },
       {
-        path: "/singerList",
+        path: '/singerList',
         component: SingerList,
-        name: "SingerList",
+        name: 'SingerList',
         meta: {
           keepAlive: true,
-          showDivDom: true,
-        },
+          showDivDom: true
+        }
       },
       {
-        path: "/search",
+        path: '/search',
         component: Search,
-        name: "Search",
+        name: 'Search',
         meta: {
           keepAlive: true,
-          showDivDom: true,
-        },
+          showDivDom: true
+        }
       },
       {
-        path: "/upload",
+        path: '/upload',
         component: Upload,
-        name: "Upload",
+        name: 'Upload',
         meta: {
-          keepAlive: true,
-        },
+          keepAlive: true
+        }
       },
       {
-        path: "/user/like",
+        path: '/user/like',
         component: Like,
-        name: "Like",
+        name: 'Like',
         meta: {
-          keepAlive: true,
-        },
+          keepAlive: true
+        }
       },
       {
-        path: "/user/played",
+        path: '/user/played',
         component: Played,
-        name: "Played",
+        name: 'Played',
         meta: {
-          keepAlive: true,
-        },
+          keepAlive: true
+        }
       },
       {
-        path: "/user/songlist",
+        path: '/user/songlist',
         component: UserSongList,
-        name: "UserSongList",
+        name: 'UserSongList',
         meta: {
-          keepAlive: true,
-        },
+          keepAlive: true
+        }
       },
 
       {
-        path: "/singerDetail/:singerId",
+        path: '/singerDetail/:singerId',
         component: SingerDetail,
-        name: "SingerDetail",
+        name: 'SingerDetail',
         meta: {
-          keepAlive: true,
-        },
+          keepAlive: true
+        }
       },
       {
-        path: "/album/:albumId",
+        path: '/album/:albumId',
         component: Album,
-        name: "Album",
+        name: 'Album',
         meta: {
-          keepAlive: false,
-        },
+          keepAlive: false
+        }
       },
       {
-        path: "/mv/:mvId",
+        path: '/mv/:mvId',
         component: Mv,
-        name: "Mv",
+        name: 'Mv',
         meta: {
-          keepAlive: false,
-        },
+          keepAlive: false
+        }
       },
       {
-        path: "/set",
+        path: '/set',
         component: Set,
-        name: "Set",
+        name: 'Set',
         meta: {
-          keepAlive: true,
-        },
-      },
-    ],
-  },
+          keepAlive: true
+        }
+      }
+    ]
+  }
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (to.name == "SingerDetail" && !savedPosition) {
-      let listDom = store.getters["user/GETSCROLLTOP"];
+    if (to.name == 'SingerDetail' && !savedPosition) {
+      const listDom = store.getters['user/GETSCROLLTOP'];
       listDom.dom.scrollTop = 0;
-    } else if (to.name == "SingerDetail" && savedPosition) {
-      let listDom = store.getters["user/GETSCROLLTOP"];
-      let name = to.name;
-      if (!listDom.dom) {
-        return;
-      } else if (listDom.scroll[name]) {
-        listDom.dom.scrollTop = listDom.scroll[name];
-      } else if (!listDom.scroll[name]) {
-        listDom.dom.scrollTop = 0;
+    } else if (to.name == 'SingerDetail' && savedPosition) {
+      const listDom = store.getters['user/GETSCROLLTOP'];
+      const name = to.name;
+      if (listDom.dom) {
+        if (listDom.scroll[name]) {
+          listDom.dom.scrollTop = listDom.scroll[name];
+        } else {
+          listDom.dom.scrollTop = 0;
+        }
       }
     }
-  },
-});
-router.beforeEach((to, from, next) => {
-  next();
+  }
 });
 
+loginValidator(router);
 export default router;

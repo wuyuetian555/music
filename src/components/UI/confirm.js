@@ -1,9 +1,9 @@
-import { createVNode, render } from "vue";
-import MusicConfirm from "./music-confirm.vue";
+import { createVNode, render } from 'vue';
+import MusicConfirm from './music-confirm.vue';
 
 // 准备一个DOM
 
-const body = document.querySelector("body");
+const body = document.querySelector('body');
 
 // 返回的是promise对象，点取消销毁组件，点确认销毁组件
 export default () => {
@@ -25,7 +25,7 @@ export default () => {
 
     const vn = createVNode(MusicConfirm, {
       cancelCallback,
-      submitCallback,
+      submitCallback
     });
     render(vn, body);
   });

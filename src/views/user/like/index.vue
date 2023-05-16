@@ -21,37 +21,36 @@
 </template>
 
 <script>
-import songlist from "@/components/songListBody.vue";
-import { ref } from "vue";
-import useMusicControl from "@/hooks/useMusicControl";
-import deletesonglist from "@/components/deleteSongList.vue";
-import { useStore } from "vuex";
-import useScrollTop from "@/hooks/useScrollTop";
-import topNav from "./components/topNav.vue";
+import songlist from '@/components/songListBody.vue';
+import { ref } from 'vue';
+import useMusicControl from '@/hooks/useMusicControl';
+import deletesonglist from '@/components/deleteSongList.vue';
+import { useStore } from 'vuex';
+import useScrollTop from '@/hooks/useScrollTop';
+import topNav from './components/topNav.vue';
 export default {
-  name: "Like",
+  name: 'Like',
   components: { songlist, deletesonglist, topNav },
   setup() {
     const show = ref(true);
     const store = useStore();
-    let mylike = store.state.user.mylike;
+    const mylike = store.state.user.mylike;
 
     const { playMusicList } = useMusicControl();
     const handlePlayMusic = ({ musicListData, musicId }) => {
       playMusicList({ musicListData, musicId });
     };
     const deletSongList = (songList) => {
-      console.log(songList);
-      store.commit("user/deleteAllMyLike", { songList });
+      store.commit('user/deleteAllMyLike', { songList });
     };
     useScrollTop();
     return {
       handlePlayMusic,
       show,
       mylike,
-      deletSongList,
+      deletSongList
     };
-  },
+  }
 };
 </script>
 

@@ -169,14 +169,12 @@ export default {
     padding: @primaryPadding;
     transition: all 0.3s;
     box-shadow: 0px 5px 500px 1px @primaryTextColor;
-
     border-radius: 5px;
-
     &.showTopNav {
       position: sticky;
       top: -216px;
       transform: translateY(216px);
-      background-image: url('@/assets/images/-2300cdf2406380eb.jpg');
+      background-image: url('@/assets/images/1.jpg');
       background-size: cover;
       background-position: center -200px;
       z-index: 1;

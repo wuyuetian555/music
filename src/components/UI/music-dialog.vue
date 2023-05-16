@@ -33,66 +33,66 @@
 
 <script>
 export default {
-  name: "MusicDialog",
-  emits: ["save", "update:show"],
+  name: 'MusicDialog',
+  emits: ['save', 'update:show'],
   props: {
     title: {
       type: String,
-      default: "标题内容",
+      default: '标题内容'
     },
     index: {
       type: String,
-      default: "left",
+      default: 'left'
     },
     show: {
       type: Boolean,
-      default: true,
+      default: true
     },
     width: {
       type: String,
-      default: "500px",
+      default: '500px'
     },
     height: {
       type: String,
-      default: "220px",
+      default: '220px'
     },
     hidetitle: {
       type: Boolean,
-      default: false,
+      default: false
     },
     hidebtn: {
       type: Boolean,
-      default: false,
+      default: false
     },
     data: {
-      default: "",
+      default: ''
     },
     toptranslate: {
-      default: "",
+      default: ''
     },
     text: {
       type: String,
-      default: "",
+      default: ''
     },
     cancelCallback: {
-      type: Function,
-    },
+      type: Function
+    }
   },
   setup(props, { emit }) {
     const close = () => {
       props.cancelCallback && props.cancelCallback();
-      emit("update:show", !props.show);
+      emit('update:show', !props.show);
     };
     const save = () => {
-      emit("save", 66);
-      emit("update:show", !props.show);
+      emit('save', 66);
+      emit('update:show', !props.show);
     };
     const isStopPropagation = (e) => {
       props.cancelCallback && props.cancelCallback();
       props.cancelCallback || e.stopPropagation();
     };
     return { close, save, isStopPropagation };
-  },
+  }
 };
 </script>
 

@@ -7,22 +7,22 @@
   </div>
 </template>
 <script>
-import { ref, onMounted } from "vue";
-import { useIntersectionObserver } from "@vueuse/core";
+import { ref, onMounted } from 'vue';
+import { useIntersectionObserver } from '@vueuse/core';
 export default {
-  name: "MusicInfiniteLoading",
+  name: 'MusicInfiniteLoading',
   props: {
     loading: {
       type: Boolean,
-      default: false,
+      default: false
     },
     finished: {
       type: Boolean,
-      default: false,
+      default: false
     },
     root: {
-      default: null,
-    },
+      default: null
+    }
   },
   setup(props, { emit }) {
     const target = ref(null);
@@ -33,7 +33,7 @@ export default {
         ([{ isIntersecting }]) => {
           if (isIntersecting) {
             if (!props.loading && !props.finished) {
-              emit("infinite");
+              emit('infinite');
             }
           }
         },
@@ -42,7 +42,7 @@ export default {
     });
 
     return { target };
-  },
+  }
 };
 </script>
 <style scoped lang="less">

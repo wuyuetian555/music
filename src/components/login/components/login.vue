@@ -42,18 +42,18 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
-import { UserFilled, Lock } from "@element-plus/icons-vue";
-import { useStore } from "vuex";
-const labelPosition = ref("right");
+import { reactive, ref, defineProps } from 'vue';
+import { UserFilled, Lock } from '@element-plus/icons-vue';
+import { useStore } from 'vuex';
+const labelPosition = ref('right');
 const ruleFormRef = ref();
 const formLabelAlign = reactive({
-  user: "",
-  password: "",
+  user: '',
+  password: ''
 });
-const emit = defineEmits(["update:showLogin"]);
+
 const props = defineProps({
-  showLogin: { type: Boolean },
+  showLogin: { type: Boolean }
 });
 const store = useStore();
 const submitForm = async (formEl) => {
@@ -61,16 +61,16 @@ const submitForm = async (formEl) => {
 
   await formEl.validate((valid) => {
     if (valid) {
-      store.dispatch("user/requestLogin", {
+      store.dispatch('user/requestLogin', {
         email: formLabelAlign.user,
-        password: formLabelAlign.password,
+        password: formLabelAlign.password
       });
     }
   });
 };
 const rules = reactive({
-  user: [{ required: true, message: "请输入邮箱" }],
-  password: [{ required: true, message: "请输入密码" }],
+  user: [{ required: true, message: '请输入邮箱' }],
+  password: [{ required: true, message: '请输入密码' }]
 });
 </script>
 
@@ -83,7 +83,7 @@ const rules = reactive({
   height: 300px;
 
   h1 {
-    font-family: Georgia, "Times New Roman", Times, serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 32px;
   }
   .login-footer {

@@ -6,14 +6,14 @@
 </template>
 
 <script>
-import DefaultTheme from "./components/defaultTheme.vue";
-import FreeTheme from "./components/freeTheme.vue";
+import DefaultTheme from './components/defaultTheme.vue';
+import FreeTheme from './components/freeTheme.vue';
 export default {
-  name: "Theme",
+  name: 'Theme',
   components: {
     DefaultTheme,
-    FreeTheme,
-  },
+    FreeTheme
+  }
 };
 </script>
 

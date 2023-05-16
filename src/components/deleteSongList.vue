@@ -55,15 +55,15 @@
 </template>
 
 <script>
-import { ref, watch } from "vue";
+import { ref, watch } from 'vue';
 export default {
-  name: "DeleteList",
-  emit: ["backAction", "deletSongList"],
+  name: 'DeleteList',
+  emit: ['backAction', 'deletSongList'],
   props: {
     musicListData: Object,
     height: {
-      default: "65vh",
-    },
+      default: '65vh'
+    }
   },
 
   setup(props, { emit }) {
@@ -85,16 +85,16 @@ export default {
       item.delete = !item.delete;
     };
     const deleteList = () => {
-      let newData = data.value.filter((item) => {
+      const newData = data.value.filter((item) => {
         return !item.delete;
       });
       if (newData.length == data.value.length) return;
       if (newData.length == 0) {
-        emit("deletSongList", newData);
-        emit("backAction");
+        emit('deletSongList', newData);
+        emit('backAction');
       } else {
         data.value = newData;
-        emit("deletSongList", newData);
+        emit('deletSongList', newData);
       }
     };
     watch(data.value, (newVal) => {
@@ -105,10 +105,10 @@ export default {
           break;
         }
       }
-      isAllDelete.value = show ? false : true;
+      isAllDelete.value = show || true;
     });
     return { isAllDelete, handleAllDelete, handleClick, data, deleteList };
-  },
+  }
 };
 </script>
 

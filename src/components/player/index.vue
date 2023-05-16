@@ -41,45 +41,45 @@
 </template>
 
 <script>
-import musicTime from "@/components/player/components/musicTime.vue";
-import control from "@/components/player/components/control.vue";
-import musicList from "@/components/player/components/music-list.vue";
-import musicProgress from "@/components/player/components/music-progress.vue";
-import { useStore } from "vuex";
+import musicTime from '@/components/player/components/musicTime.vue';
+import control from '@/components/player/components/control.vue';
+
+import musicProgress from '@/components/player/components/music-progress.vue';
+import { useStore } from 'vuex';
 import {
   reactive,
   toRefs,
   onDeactivated,
   onActivated,
-  onBeforeUnmount,
-} from "vue";
-import { filterTime } from "@/utils/usefilter";
-import { useRouter } from "vue-router";
+  onBeforeUnmount
+} from 'vue';
+import { filterTime } from '@/utils/usefilter';
+import { useRouter } from 'vue-router';
 
 export default {
-  name: "Player",
+  name: 'Player',
   components: {
     control,
-    musicList,
     musicProgress,
-    musicTime,
+    musicTime
   },
   props: {
     showMusicList: {
-      default: true,
-    },
+      default: true
+    }
   },
   setup() {
     const store = useStore();
     const router = useRouter();
     const audio = store.state.musicplay.audio;
+    audio.crossOrigin = 'anonymous';
     const data = reactive({
-      show: "0px",
+      show: '0px',
       showLyric: false,
-      musicInfo: store.getters["musicplay/getPlayingMusic"],
-      duration: "00:00",
-      filtercurrentTime: "00:00",
-      currentTime: 0,
+      musicInfo: store.getters['musicplay/getPlayingMusic'],
+      duration: '00:00',
+      filtercurrentTime: '00:00',
+      currentTime: 0
     });
 
     function timeupdate() {
@@ -95,50 +95,52 @@ export default {
         }
       };
     }
-    let getCurrentTime = timeupdate();
+    const getCurrentTime = timeupdate();
     const getDuration = () => {
       data.duration = filterTime(audio.duration);
     };
-    audio.addEventListener("timeupdate", getCurrentTime);
-    audio.addEventListener("canplay", getDuration);
+    audio.addEventListener('timeupdate', getCurrentTime);
+    audio.addEventListener('canplay', getDuration);
 
     onDeactivated(() => {
-      audio.removeEventListener("timeupdate", getCurrentTime);
-      audio.removeEventListener("canplay", getDuration);
+      audio.removeEventListener('timeupdate', getCurrentTime);
+      audio.removeEventListener('canplay', getDuration);
     });
     onActivated(() => {
-      audio.addEventListener("timeupdate", getCurrentTime);
-      audio.addEventListener("canplay", getDuration);
+      audio.addEventListener('timeupdate', getCurrentTime);
+      audio.addEventListener('canplay', getDuration);
     });
     onBeforeUnmount(() => {
-      audio.removeEventListener("timeupdate", getCurrentTime);
-      audio.removeEventListener("canplay", getDuration);
+      audio.removeEventListener('timeupdate', getCurrentTime);
+      audio.removeEventListener('canplay', getDuration);
     });
     const goSingerDetail = (singerId) => {
-      store.commit("musicplay/closeLyric");
-      router.push({
-        name: "SingerDetail",
-        params: {
-          singerId: singerId,
-        },
-      });
+      if (singerId && !singerId.toString().includes('th')) {
+        store.commit('musicplay/closeLyric');
+        router.push({
+          name: 'SingerDetail',
+          params: {
+            singerId: singerId
+          }
+        });
+      }
     };
     const goMv = (id) => {
-      store.commit("musicplay/closeLyric");
+      store.commit('musicplay/closeLyric');
       router.push({
-        name: "Mv",
+        name: 'Mv',
         params: {
-          mvId: id,
-        },
+          mvId: id
+        }
       });
     };
     return {
       audio,
       ...toRefs(data),
       goSingerDetail,
-      goMv,
+      goMv
     };
-  },
+  }
 };
 </script>
 

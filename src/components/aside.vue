@@ -93,22 +93,22 @@
 </template>
 
 <script>
-import Drawer from "@/components/drawer.vue";
-import { useStore } from "vuex";
-import { computed } from "@vue/runtime-core";
+import Drawer from '@/components/drawer.vue';
+import { useStore } from 'vuex';
+import { computed } from '@vue/runtime-core';
 export default {
-  name: "Aside",
+  name: 'Aside',
   components: { Drawer },
   setup() {
     const store = useStore();
-    let show = computed(() => {
+    const show = computed(() => {
       return store.state.user.showAside;
     });
     const isShowAside = () => {
-      store.commit("user/isShowAside");
+      store.commit('user/isShowAside');
     };
     return { show, isShowAside };
-  },
+  }
 };
 </script>
 

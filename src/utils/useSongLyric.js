@@ -1,5 +1,5 @@
 export default ({ lyric, tlyric }) => {
-  let re = /\[([^\]]+)\]([^\[]+)/g;
+  const re = /\[([^\]]+)]([^[]+)/g;
   let result = [];
   let tResult = {};
   if (lyric) {
@@ -7,13 +7,13 @@ export default ({ lyric, tlyric }) => {
       result.push({
         initTime: formatTimeToSec($1),
         lyric: $2,
-        time: $1,
+        time: $1
       });
     });
 
     result = result.filter((item) => {
-      item.lyric = item.lyric.replace(/^[ ]*\n[ ]*$/g, "\n");
-      return item.lyric != "\n";
+      item.lyric = item.lyric.replace(/^[ ]*\n[ ]*$/g, '\n');
+      return item.lyric != '\n';
     });
   }
   if (tlyric) {
@@ -27,6 +27,6 @@ export default ({ lyric, tlyric }) => {
 };
 
 function formatTimeToSec(time) {
-  var arr = time.split(":");
+  const arr = time.split(':');
   return (parseFloat(arr[0]) * 60 + parseFloat(arr[1])).toFixed(2);
 }

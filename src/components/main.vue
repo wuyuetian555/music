@@ -33,23 +33,23 @@
 </template>
 
 <script>
-import { computed, reactive, toRefs, onMounted, watch } from "vue";
-import { useRoute } from "vue-router";
-import { useStore } from "vuex";
-import Lyric from "@/components/lyric/index.vue";
-import Player from "@/components/player/index.vue";
-import useMusicControl from "@/hooks/useMusicControl";
+import { computed, reactive, toRefs, onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import Lyric from '@/components/lyric/index.vue';
+import Player from '@/components/player/index.vue';
+import useMusicControl from '@/hooks/useMusicControl';
 export default {
-  name: "Main",
+  name: 'Main',
   components: {
     Lyric,
-    Player,
+    Player
   },
   setup() {
     const data = reactive({
       list: null,
       showBack: false,
-      showBack2: false,
+      showBack2: false
     });
     const route = useRoute();
     const store = useStore();
@@ -58,29 +58,29 @@ export default {
       return store.state.musicplay.showLyric;
     });
     onMounted(() => {
-      data.list.addEventListener("scroll", listenScroll());
-      store.commit("user/getScrollTopDom", data.list);
+      data.list.addEventListener('scroll', listenScroll());
+      store.commit('user/getScrollTopDom', data.list);
     });
     const { nextMusic } = useMusicControl();
-    audio.addEventListener("ended", () => {
+    audio.addEventListener('ended', () => {
       nextMusic();
     });
     const backTop = () => {
       data.list.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: 'smooth'
       });
     };
     watch(
       () => route.name,
       (newVal) => {
         if (
-          newVal == "Home" ||
-          newVal == "SingerDetail" ||
-          newVal == "Album" ||
-          newVal == "Played" ||
-          newVal == "Like" ||
-          newVal == "SingerList"
+          newVal == 'Home' ||
+          newVal == 'SingerDetail' ||
+          newVal == 'Album' ||
+          newVal == 'Played' ||
+          newVal == 'Like' ||
+          newVal == 'SingerList'
         ) {
           data.showBack = true;
         } else {
@@ -95,8 +95,8 @@ export default {
       return function () {
         if (!timer) {
           timer = setTimeout(() => {
-            data.showBack2 = data.list.scrollTop > 80 ? true : false;
-            store.commit("user/listenListScroll", data.list.scrollTop);
+            data.showBack2 = data.list.scrollTop > 80;
+            store.commit('user/listenListScroll', data.list.scrollTop);
             timer = null;
           }, 150);
         }
@@ -105,9 +105,9 @@ export default {
     return {
       showLyric,
       ...toRefs(data),
-      backTop,
+      backTop
     };
-  },
+  }
 };
 </script>
 

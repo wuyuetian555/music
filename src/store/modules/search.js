@@ -1,25 +1,25 @@
-import usefIlterMusicData from "@/hooks/usefIlterMusicData";
-import { findsearchSuggest } from "@/api/search";
-import { searchSongs } from "@/api/search";
+import usefIlterMusicData from '@/hooks/usefIlterMusicData';
+import { findsearchSuggest, searchSongs } from '@/api/search';
+
 export default {
   namespaced: true,
   state() {
     return {
       searchList: [],
-      searchValue: "",
-      activeIndex: 0,
+      searchValue: '',
+      activeIndex: 0
     };
   },
   getters: {
     GETACTIVEINDEX(state) {
       return state.activeIndex;
-    },
+    }
   },
   actions: {
     async searchSongsRequest({ state }) {
-      if (state.searchValue == "") return;
-      const result = await searchSongs({ keywords: state.searchValue });
+      if (state.searchValue == '') return;
       state.searchList.splice(0);
+      const result = await searchSongs({ keywords: state.searchValue });
       setTimeout(() => {
         state.searchList.push(...result.data);
       }, 10);
@@ -27,19 +27,19 @@ export default {
     async searchWYYSongsSuggest({ state }) {
       const { result } = await findsearchSuggest({
         keywords: state.searchValue,
-        limit: 10,
+        limit: 10
       });
       return result.songs;
     },
     async searchWYYSongs({ state, commit }, { keywords }) {
-      if (state.searchValue == "") return;
+      if (state.searchValue == '') return;
       const { result } = await findsearchSuggest({
-        keywords: keywords ? keywords : state.searchValue,
-        limit: 50,
+        keywords: keywords || state.searchValue,
+        limit: 50
       });
-      commit("editActiveIndex", { activeIndex: 0 });
-      commit("getSearchList", { songList: result.songs });
-    },
+      commit('editActiveIndex', { activeIndex: 0 });
+      commit('getSearchList', { songList: result.songs });
+    }
   },
   mutations: {
     getSearchList(state, { songList }) {
@@ -53,6 +53,6 @@ export default {
     },
     editActiveIndex(state, { activeIndex }) {
       state.activeIndex = activeIndex;
-    },
-  },
+    }
+  }
 };

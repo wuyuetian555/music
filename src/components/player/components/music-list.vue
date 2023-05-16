@@ -19,7 +19,7 @@
               :class="{
                 playing:
                   item.musicId === musicInfo.musicId &&
-                  $store.state.musicplay.musicList.isPlay,
+                  $store.state.musicplay.musicList.isPlay
               }"
             >
               <div class="music-list-songs-item">
@@ -65,22 +65,22 @@
 </template>
 
 <script>
-import { computed, watch } from "vue";
-import { useStore } from "vuex";
-import useMusicControl from "@/hooks/useMusicControl";
+import { computed, watch } from 'vue';
+import { useStore } from 'vuex';
+import useMusicControl from '@/hooks/useMusicControl';
 export default {
-  name: "musicList",
+  name: 'musicList',
   props: {
     show: {
-      default: false,
-    },
+      default: false
+    }
   },
   setup() {
     const store = useStore();
     const musicList = computed(() => {
-      return store.getters["musicplay/getMusicListData"].data;
+      return store.getters['musicplay/getMusicListData'].data;
     });
-    const musicInfo = store.getters["musicplay/getPlayingMusic"];
+    const musicInfo = store.getters['musicplay/getPlayingMusic'];
 
     const { pauseMusic, playMusic } = useMusicControl();
     const handleClick = (e) => {
@@ -91,18 +91,18 @@ export default {
     watch(
       musicList,
       () => {
-        localStorage.setItem("musicList", JSON.stringify(musicList.value));
+        localStorage.setItem('musicList', JSON.stringify(musicList.value));
       },
       {
-        deep: true,
+        deep: true
       }
     );
     return {
       musicList,
       musicInfo,
-      handleClick,
+      handleClick
     };
-  },
+  }
 };
 </script>
 

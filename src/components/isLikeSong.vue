@@ -14,14 +14,14 @@
 </template>
 
 <script>
-import { ref, onUpdated, watch, onBeforeMount, computed } from "vue";
-import { useStore } from "vuex";
+import { ref, onBeforeMount } from 'vue';
+import { useStore } from 'vuex';
 export default {
-  name: "IsLikeSong",
+  name: 'IsLikeSong',
   props: {
     musicId: [String, Number],
     allData: Object,
-    song: Object,
+    song: Object
   },
   setup(props) {
     const show = ref(true);
@@ -31,8 +31,12 @@ export default {
       const index = mylike.findIndex((item) => {
         return props.musicId == item.musicId;
       });
-
-      show.value = index != -1 ? false : true;
+      if (index != -1) {
+        show.value = false;
+      } else {
+        show.value = true;
+      }
+      // show.value = index != -1 ? false : true;
     };
     onBeforeMount(() => {
       isLike();
@@ -40,10 +44,10 @@ export default {
     const handleClick = (e) => {
       if (props.song.iscanPlay) return;
       if (e.target.dataset.like) {
-        store.commit("user/addMyLike", { song: props.song });
+        store.commit('user/addMyLike', { song: props.song });
         show.value = false;
       } else if (e.target.dataset.dislike) {
-        store.commit("user/subMyLike", { song: props.song });
+        store.commit('user/subMyLike', { song: props.song });
         show.value = true;
       }
     };
@@ -60,9 +64,9 @@ export default {
     // );
     return {
       show,
-      handleClick,
+      handleClick
     };
-  },
+  }
 };
 </script>
 

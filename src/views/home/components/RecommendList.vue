@@ -28,21 +28,21 @@
 </template>
 
 <script>
-import { findRecommendSongList } from "@/api/home";
-import { ref, watch, computed } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { findRecommendSongList } from '@/api/home';
+import { ref, watch, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 export default {
-  nam: "RecommendList",
+  nam: 'RecommendList',
   setup() {
     const recommendSongList = ref(null);
     const router = useRouter();
     const store = useStore();
 
-    let isShowAside = computed(() => {
+    const isShowAside = computed(() => {
       return store.state.user.showAside;
     });
-    const gridColums = ref("repeat(6, 1fr)");
+    const gridColums = ref('repeat(6, 1fr)');
     findRecommendSongList().then((res) => {
       recommendSongList.value = res.result.splice(0, 15);
     });
@@ -50,26 +50,26 @@ export default {
       const id = e.target.dataset.musiclistid;
       if (id) {
         router.push({
-          name: "SongList",
+          name: 'SongList',
           params: {
-            musiclistid: id,
-          },
+            musiclistid: id
+          }
         });
       }
     };
     watch(
       isShowAside,
       (newVal) => {
-        gridColums.value = !newVal ? "repeat(6, 1fr)" : "repeat(5, 1fr)";
+        gridColums.value = !newVal ? 'repeat(6, 1fr)' : 'repeat(5, 1fr)';
       },
       { immediate: true }
     );
     return {
       recommendSongList,
       jumpToSongList,
-      gridColums,
+      gridColums
     };
-  },
+  }
 };
 </script>
 

@@ -16,21 +16,21 @@
 </template>
 
 <script>
-import { tabsData } from "./index";
-import { ref } from "vue";
-import MusicTheme from "./components/theme/index.vue";
+import { tabsData } from './index';
+import { ref } from 'vue';
+import MusicTheme from './components/theme/index.vue';
 export default {
-  name: "SET",
+  name: 'SET',
   components: {
-    MusicTheme,
+    MusicTheme
   },
   setup() {
     const activeIndex = ref(0);
     return {
       tabsData,
-      activeIndex,
+      activeIndex
     };
-  },
+  }
 };
 </script>
 

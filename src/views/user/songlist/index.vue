@@ -11,27 +11,25 @@
 </template>
 
 <script>
-import { reactive, ref } from "vue";
+import { reactive, ref } from 'vue';
 export default {
-  name: "SongList",
+  name: 'SongList',
   components: {},
   setup() {
     const tabsDate = reactive([
       {
-        value: "歌单",
-        id: 1,
-      },
+        value: '歌单',
+        id: 1
+      }
     ]);
     const button = ref(null);
-    const getcolor = () => {
-      console.log(button.value.value);
-    };
+    const getcolor = () => {};
     return {
       tabsDate,
       button,
-      getcolor,
+      getcolor
     };
-  },
+  }
 };
 </script>
 

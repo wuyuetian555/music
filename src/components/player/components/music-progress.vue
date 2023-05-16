@@ -12,30 +12,30 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed } from 'vue';
 
 export default {
-  name: "MusicProgress",
-  emit: ["clickProgress"],
+  name: 'MusicProgress',
+  emit: ['clickProgress'],
   props: {
     currentTime: {
       type: Number,
-      default: 0,
+      default: 0
     },
     duration: {
       type: Number,
-      default: 0,
-    },
+      default: 0
+    }
   },
   setup(props, { emit }) {
     const el = ref(null);
     const el2 = ref(null);
     const divWidth = ref(null);
     const clickProgress = (e) => {
-      el2.value.style.width = e.offsetX + "px";
+      el2.value.style.width = e.offsetX + 'px';
 
       emit(
-        "clickProgress",
+        'clickProgress',
         Math.ceil((e.offsetX / divWidth.value) * props.duration)
       );
     };
@@ -50,7 +50,7 @@ export default {
       return (
         ((divWidth.value - 6) / Math.round(props.duration)) *
           Math.round(props.currentTime) +
-        "px"
+        'px'
       );
     });
 
@@ -59,9 +59,9 @@ export default {
       el2,
       clickProgress,
       currentWidth,
-      divWidth,
+      divWidth
     };
-  },
+  }
 };
 </script>
 

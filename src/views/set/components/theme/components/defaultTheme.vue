@@ -42,25 +42,26 @@
 </template>
 
 <script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 export default {
-  name: "DefaultTheme",
+  name: 'DefaultTheme',
   setup() {
     const store = useStore();
     const theme = computed(() => {
       return store.state.user.theme;
     });
     const setTheme = (e) => {
-      let targetTheme = e.target.dataset.theme;
+      const targetTheme = e.target.dataset.theme;
       if (targetTheme == theme.value) return;
-      store.commit("user/setTheme", targetTheme);
+
+      store.commit('user/setTheme', targetTheme);
     };
     return {
       theme,
-      setTheme,
+      setTheme
     };
-  },
+  }
 };
 </script>
 
@@ -83,7 +84,7 @@ export default {
     }
     .category {
       padding-left: 30px;
-      flex: 1;
+
       .category-item {
         font-size: 15px;
         height: 50px;
@@ -93,11 +94,11 @@ export default {
 
         .icon {
           font-size: 12px;
-          margin-right: 5px;
+          padding-right: 5px;
         }
         .theme {
           font-size: 30px;
-          margin-right: 2px;
+          padding-right: 2px;
         }
       }
     }

@@ -1,26 +1,26 @@
 <template>
   <div class="album-desc">
-    <h3>{{JSON.parse(desc)}}</h3>
+    <h3>{{ JSON.parse(desc) }}</h3>
   </div>
 </template>
 
 <script>
 export default {
-  name: "AlbumDesc",
+  name: 'AlbumDesc',
   props: {
     desc: {
-      default: "",
-    },
+      default: ''
+    }
   },
-  setup() {},
+  setup() {}
 };
 </script>
 
 <style scoped lang="less">
-.album-desc{
-    margin-top:15px;
-    h3{
-        white-space: pre-wrap;
-    }
+.album-desc {
+  margin-top: 15px;
+  h3 {
+    white-space: pre-wrap;
+  }
 }
 </style>

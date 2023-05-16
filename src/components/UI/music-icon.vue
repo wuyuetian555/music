@@ -6,20 +6,20 @@
 
 <script>
 export default {
-  name: "MusicMvicon",
+  name: 'MusicMvicon',
   props: {
     width: {
       typepf: String,
-      default: "12px",
+      default: '12px'
     },
     title: {
       typeof: String,
-      default: "MV",
+      default: 'MV'
     },
     data: {
-      default: 0,
-    },
-  },
+      default: 0
+    }
+  }
 };
 </script>
 

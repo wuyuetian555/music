@@ -30,43 +30,45 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch } from 'vue';
 export default {
-  name: "MusicTabs",
-  emit: ["change"],
+  name: 'MusicTabs',
+  emit: ['change'],
   props: {
     size: {
       type: [Number, String],
-      default: 17,
+      default: 17
     },
     barWidth: {
       type: [Number, String],
-      default: 17,
+      default: 17
     },
     paddingWidth: {
       type: [Number, String],
-      default: 20,
+      default: 20
     },
 
     activeIndex: {
       type: [Number, String],
-      default: 0,
+      default: 0
     },
     bottomPosition: {
       type: [Number, String],
-      default: 0,
+      default: 0
     },
     width: {
-      default: "80px",
+      default: '80px'
     },
-    data: Object,
+    data: Object
   },
   setup(props, { emit }) {
     const bar = ref(null);
     const item = ref(null);
     const changePosition = (e) => {
-      emit("change", props.data[e.target.dataset.index]);
-      emit("update:activeIndex", e.target.dataset.index);
+      if (e.target.dataset.index) {
+        emit('change', props.data[e.target.dataset.index]);
+        emit('update:activeIndex', e.target.dataset.index);
+      }
     };
     onMounted(() => {
       init();
@@ -79,12 +81,12 @@ export default {
         const getLeftPosition =
           (offsetWidth - props.paddingWidth * 2) / 2 - props.barWidth / 2;
         bar.value.style.left =
-          offsetLeft + props.paddingWidth + getLeftPosition + "px";
+          offsetLeft + props.paddingWidth + getLeftPosition + 'px';
       } else {
         const offsetWidth = item.value[0].offsetWidth;
         const getLeftPosition =
           (offsetWidth - props.paddingWidth) / 2 - props.barWidth / 2;
-        bar.value.style.left = +getLeftPosition + "px";
+        bar.value.style.left = +getLeftPosition + 'px';
       }
     };
 
@@ -98,9 +100,9 @@ export default {
     return {
       changePosition,
       bar,
-      item,
+      item
     };
-  },
+  }
 };
 </script>
 

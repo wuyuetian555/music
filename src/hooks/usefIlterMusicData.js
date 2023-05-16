@@ -1,6 +1,6 @@
-import { filterTime } from "@/utils/usefilter";
+import { filterTime } from '@/utils/usefilter';
 export default (musicData) => {
-  let result = musicData.map((item) => {
+  const result = musicData.map((item) => {
     return {
       musicName: item.name,
       musicId: item.id,
@@ -11,7 +11,7 @@ export default (musicData) => {
       Singer: item.ar[0].name,
       SingerId: item.ar[0].id,
       duration: filterTime(item.dt / 1000),
-      iscanPlay: item.noCopyrightRcmd,
+      iscanPlay: item.noCopyrightRcmd
     };
   });
   return result;

@@ -13,12 +13,12 @@
         :key="item.musicId"
         :class="{
           active: item.musicId == musicInfo.musicId,
-          disabled: item.iscanPlay != null,
+          disabled: item.iscanPlay != null
         }"
       >
         <div style="flex: 6" class="list-item-name ellipsis">
           <span class="index" v-if="!hideAlbum">{{
-            index + 1 < 10 ? "0" + (index + 1) : index + 1
+            index + 1 < 10 ? '0' + (index + 1) : index + 1
           }}</span>
           <islikesong :musicId="item.musicId" :song="item"></islikesong>
           <div class="name ellipsis">
@@ -79,107 +79,86 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import axios from "axios";
-import { useStore } from "vuex";
-import useMusicControl from "@/hooks/useMusicControl";
-import islikesong from "@/components/isLikeSong.vue";
-import { useRouter } from "vue-router";
-import confirm from "@/components/UI/confirm";
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+import useMusicControl from '@/hooks/useMusicControl';
+import islikesong from '@/components/isLikeSong.vue';
+import { useRouter } from 'vue-router';
+import confirm from '@/components/UI/confirm';
 export default {
-  name: "SongListBody",
-  emit: ["playMusic", "deleteSong"],
+  name: 'SongListBody',
+  emit: ['playMusic', 'deleteSong'],
   props: {
     musicListData: Object,
     height: {
-      default: "auto",
+      default: 'auto'
     },
     hideSinger: {
-      default: true,
+      default: true
     },
     hideAlbum: {
-      default: true,
+      default: true
     },
     hideDeleteSong: {
-      default: false,
-    },
+      default: false
+    }
   },
   components: {
-    islikesong,
+    islikesong
   },
   setup(props, { emit }) {
     const isPlayCurrentMusic = ref(true);
     const store = useStore();
     const router = useRouter();
-    const musicInfo = store.getters["musicplay/getPlayingMusic"];
+    const musicInfo = store.getters['musicplay/getPlayingMusic'];
     const handleClick = (e) => {
       const target = e.target;
       if (target.dataset.musicid) {
-        emit("playMusic", {
+        emit('playMusic', {
           musicListData: props.musicListData,
-          musicId: target.dataset.musicid,
+          musicId: target.dataset.musicid
         });
-      } else if (target.className == "pause") {
+      } else if (target.className == 'pause') {
         pauseMusic();
       } else if (target.dataset.singerid) {
+        if (target.dataset.singerid.includes('th')) return;
         router.push({
-          name: "SingerDetail",
+          name: 'SingerDetail',
           params: {
-            singerId: target.dataset.singerid,
-          },
+            singerId: target.dataset.singerid
+          }
         });
       } else if (target.dataset.albumid && target.dataset.albumid != 0) {
         router.push({
-          name: "Album",
+          name: 'Album',
           params: {
-            albumId: target.dataset.albumid,
-          },
+            albumId: target.dataset.albumid
+          }
         });
       } else if (target.dataset.mvid) {
         router.push({
-          name: "Mv",
+          name: 'Mv',
           params: {
-            mvId: target.dataset.mvid,
-          },
+            mvId: target.dataset.mvid
+          }
         });
       } else if (target.dataset.delete) {
         confirm().then((res) => {
-          res && emit("deleteSong", { musicId: target.dataset.delete });
+          res && emit('deleteSong', { musicId: target.dataset.delete });
         });
       } else if (target.dataset.xiazai) {
-        store.dispatch("musicplay/downloadMusic", {
-          musicId: target.dataset.xiazai,
+        store.dispatch('musicplay/downloadMusic', {
+          musicId: target.dataset.xiazai
         });
-        // confirm();
-        // axios({
-        //   url: "http://124.220.0.103:3001/music/1681892043773.m4a",
-        //   method: "GET",
-        //   responseType: "arraybuffer",
-        //   withCredentials: false,
-        // }).then((response) => {
-        //   // 创建Blob对象
-        //   const blob = new Blob([response.data], {
-        //     type: response.headers["content-type"],
-        //   });
-        //   // 创建a标签并模拟点击下载
-        //   const a = document.createElement("a");
-        //   const downloadUrl = window.URL.createObjectURL(blob);
-        //   a.href = downloadUrl;
-        //   a.download = "1.m4a";
-        //   document.body.appendChild(a);
-        //   a.click();
-        //   window.URL.revokeObjectURL(downloadUrl);
-        //   document.body.removeChild(a);
-        // });
       }
     };
     const { pauseMusic } = useMusicControl();
     return {
       handleClick,
       isPlayCurrentMusic,
-      musicInfo,
+      musicInfo
     };
-  },
+  }
 };
 </script>
 

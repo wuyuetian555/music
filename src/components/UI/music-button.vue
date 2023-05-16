@@ -9,12 +9,12 @@
 
 <script>
 export default {
-  name: "MusicButton",
+  name: 'MusicButton',
   props: {
     icon: {
-      default: "",
-    },
-  },
+      default: ''
+    }
+  }
 };
 </script>
 

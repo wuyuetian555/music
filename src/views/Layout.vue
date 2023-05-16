@@ -12,22 +12,17 @@
 </template>
 
 <script>
-import Header from "@/components/header.vue";
-import Aside from "@/components/aside.vue";
-import Player from "@/components/player/index.vue";
-import Lyric from "@/components/lyric/index.vue";
-import Main from "@/components/main.vue";
-
+import Header from '@/components/header.vue';
+import Aside from '@/components/aside.vue';
+import Main from '@/components/main.vue';
 export default {
-  name: "Layout",
+  name: 'Layout',
   components: {
     Header,
     Aside,
-    Player,
-    Lyric,
-    Main,
+    Main
   },
-  setup() {},
+  setup() {}
 };
 </script>
 
@@ -38,7 +33,7 @@ export default {
   position: fixed;
   background-position: center;
   background-size: cover;
-  background-image: url("@/assets/images/1.jpg");
+  background-image: url('@/assets/images/1.jpg');
 }
 
 .container {

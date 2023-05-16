@@ -42,22 +42,22 @@
 </template>
 
 <script>
-import { findPartRecommendSongList } from "@/api/home";
-import { onMounted, reactive, toRefs, ref, nextTick } from "vue";
-import { useRoute } from "vue-router";
-import musicDialog from "@/components/UI/music-dialog.vue";
+import { findPartRecommendSongList } from '@/api/home';
+import { onMounted, reactive, toRefs, ref, nextTick } from 'vue';
+import { useRoute } from 'vue-router';
+import musicDialog from '@/components/UI/music-dialog.vue';
 export default {
   components: { musicDialog },
-  name: "ListHeader",
+  name: 'ListHeader',
   setup() {
     const route = useRoute();
     const textarea = ref(null);
     const show = ref(false);
     const more = ref(false);
     const songListDetail = reactive({
-      bg: "",
-      description: "",
-      name: "",
+      bg: '',
+      description: '',
+      name: ''
     });
     onMounted(async () => {
       const result = await findPartRecommendSongList(route.params.musiclistid);
@@ -74,9 +74,9 @@ export default {
       ...toRefs(songListDetail),
       textarea,
       show,
-      more,
+      more
     };
-  },
+  }
 };
 </script>
 

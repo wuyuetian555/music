@@ -25,7 +25,7 @@
           <template #reference>
             <div>
               <div class="user-name ellipsis">
-                <h4>Hi,{{ userinfo.email.split("@")[0] }}</h4>
+                <h4>Hi,{{ userinfo.email.split('@')[0] }}</h4>
                 <span :title="userinfo.email">{{ userinfo.email }}</span>
               </div>
               <span class="avatar"
@@ -48,17 +48,14 @@
 </template>
 
 <script>
-import HeaderNav from "@/components/headerNav.vue";
-import Time from "@/components/time.vue";
-import Skin from "@/components/skin.vue";
-import SearchInput from "@/components/searchinput.vue";
-
-import { ref, computed, onBeforeMount } from "vue";
-import Login from "@/components/login/index.vue";
-import { useStore } from "vuex";
+import HeaderNav from '@/components/headerNav.vue';
+import SearchInput from '@/components/searchinput.vue';
+import { ref, computed, onBeforeMount } from 'vue';
+import Login from '@/components/login/index.vue';
+import { useStore } from 'vuex';
 export default {
-  name: "Header",
-  components: { HeaderNav, Time, Skin, SearchInput, Login },
+  name: 'Header',
+  components: { HeaderNav, SearchInput, Login },
   setup() {
     const show = ref(false);
     const store = useStore();
@@ -66,13 +63,13 @@ export default {
       return store.state.user.userinfo;
     });
     onBeforeMount(() => {
-      store.commit("user/initTheme", store.state.user.theme);
+      store.commit('user/initTheme', store.state.user.theme);
     });
     const signOut = () => {
-      store.commit("user/signOut");
+      store.commit('user/signOut');
     };
     return { show, userinfo, signOut };
-  },
+  }
 };
 </script>
 

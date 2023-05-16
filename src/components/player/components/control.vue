@@ -11,7 +11,7 @@
         class="iconfont"
         :class="{
           'icon-shengyin_shiti': volume != 0,
-          'icon-24gf-volumeCross': volume == 0,
+          'icon-24gf-volumeCross': volume == 0
         }"
       ></i>
       <VolumeProgress
@@ -25,12 +25,12 @@
 </template>
 
 <script>
-import { computed, onBeforeMount, ref } from "vue";
-import { useStore } from "vuex";
-import useMusicControl from "@/hooks/useMusicControl";
-import VolumeProgress from "@/components/progress.vue";
+import { computed, onBeforeMount, ref } from 'vue';
+import { useStore } from 'vuex';
+import useMusicControl from '@/hooks/useMusicControl';
+import VolumeProgress from '@/components/progress.vue';
 export default {
-  name: "control",
+  name: 'control',
   components: { VolumeProgress },
   setup() {
     const store = useStore();
@@ -41,9 +41,9 @@ export default {
     const volume = ref(null);
     const { pauseMusic, playMusic, nextMusic, lastMusic } = useMusicControl();
     const getProgressValue = () => {
-      if (volume.value == "Infinity") volume.value = 1;
+      if (volume.value == 'Infinity') volume.value = 1;
       store.state.musicplay.audio.volume = volume.value > 1 ? 1 : volume.value;
-      localStorage.setItem("volume", volume.value);
+      localStorage.setItem('volume', volume.value);
     };
     const mouseEnter = () => {
       showProgress.value = true;
@@ -52,7 +52,7 @@ export default {
       showProgress.value = false;
     };
     onBeforeMount(() => {
-      let localVolume = localStorage.getItem("volume");
+      const localVolume = localStorage.getItem('volume');
       if (localVolume) {
         store.state.musicplay.audio.volume = localVolume;
       }
@@ -69,9 +69,9 @@ export default {
       getProgressValue,
       mouseEnter,
       showProgress,
-      mouseLeave,
+      mouseLeave
     };
-  },
+  }
 };
 </script>
 

@@ -6,11 +6,11 @@
 </template>
 
 <script>
-import listHeader from "./components/listHeader.vue";
-import listMain from "./components/listMain.vue";
+import listHeader from './components/listHeader.vue';
+import listMain from './components/listMain.vue';
 export default {
-  name: "SongList",
-  components: { listHeader, listMain },
+  name: 'SongList',
+  components: { listHeader, listMain }
 };
 </script>
 

@@ -19,32 +19,32 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import UploadMusic from "./components/uploadMusic/index.vue";
-import UploadAdmin from "./components/uploadAdmin/index.vue";
+import { ref } from 'vue';
+import UploadMusic from './components/uploadMusic/index.vue';
+import UploadAdmin from './components/uploadAdmin/index.vue';
 export default {
-  name: "Upload",
+  name: 'Upload',
   components: {
     UploadMusic,
-    UploadAdmin,
+    UploadAdmin
   },
   setup() {
     const activeIndex = ref(0);
     const tabsData = ref([
       {
-        value: "上传歌曲",
-        id: 1,
+        value: '上传歌曲',
+        id: 1
       },
       {
-        value: "上传记录",
-        id: 2,
-      },
+        value: '上传记录',
+        id: 2
+      }
     ]);
     return {
       tabsData,
-      activeIndex,
+      activeIndex
     };
-  },
+  }
 };
 </script>
 

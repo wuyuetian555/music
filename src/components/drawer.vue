@@ -8,37 +8,37 @@
 </template>
 
 <script>
-import { ref, onBeforeMount, onUpdated } from "vue";
+import { ref, onBeforeMount, onUpdated } from 'vue';
 export default {
-  name: "Drawer",
+  name: 'Drawer',
   props: {
     openWidth: {
       type: String,
-      default: "500px",
+      default: '500px'
     },
     height: {
       type: String,
-      default: "300px",
+      default: '300px'
     },
     closeWidth: {
       type: String,
-      default: "0px",
+      default: '0px'
     },
     show: {
-      default: true,
-    },
+      default: true
+    }
   },
   setup(props, { emit }) {
-    let width = ref(null);
+    const width = ref(null);
     const style = {
-      open: "icon-xiangzuojiantou",
-      close: "icon-jiantou",
+      open: 'icon-xiangzuojiantou',
+      close: 'icon-jiantou'
     };
     onBeforeMount(() => {
       width.value = props.show ? props.openWidth : props.closeWidth;
     });
     const clickOpen = () => {
-      emit("changState");
+      emit('changState');
     };
     onUpdated(() => {
       width.value = props.show ? props.openWidth : props.closeWidth;
@@ -46,9 +46,9 @@ export default {
     return {
       width,
       clickOpen,
-      style,
+      style
     };
-  },
+  }
 };
 </script>
 
