@@ -24,7 +24,6 @@ export default {
 <style lang="less" scoped>
 .home {
   color: @primaryTextColor;
-  height: 80vh;
   padding: @primaryPadding;
 }
 </style>

@@ -10,6 +10,7 @@
   "dependencies": {
     "@vueuse/core": "^9.5.0",
     "axios": "^1.1.2",
+    "colorthief": "^2.4.0",
     "core-js": "^3.8.3",
     "default-passive-events": "^2.0.0",
     "element-plus": "^2.2.32",

@@ -128,7 +128,8 @@ export default {
 
   .list {
     height: calc(100vh - 146px);
-    overflow: scroll;
+    overflow: auto;
+
     .backtop {
       position: fixed;
       right: 255px;

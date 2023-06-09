@@ -168,17 +168,16 @@ export default {
 
   .free {
     display: flex;
+
     .free-name {
       width: 80px;
       text-align: center;
       font-size: 15px;
       opacity: 0.8;
-      margin: auto;
+      margin: auto 0;
     }
     .free-parameter {
-      flex: 1;
       padding-left: 30px;
-
       .free-item {
         height: 50px;
         line-height: 50px;
@@ -210,9 +209,8 @@ export default {
       }
     }
     .free-btn {
-      margin: auto;
+      margin: auto 20px;
       cursor: pointer;
-      margin-right: 500px;
       padding: 10px;
       .icon {
         font-size: 12px;

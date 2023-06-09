@@ -124,7 +124,7 @@ export default {
   width: 240px;
   background-color: @primaryColor;
   overflow: hidden;
-  z-index: 1;
+  z-index: 9999;
   .music-list-item {
     display: flex;
     flex-direction: column;

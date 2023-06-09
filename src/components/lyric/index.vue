@@ -1,11 +1,6 @@
 <template>
   <div class="lyric">
-    <div
-      class="bg"
-      :style="{
-        backgroundImage: `url(${musicInfo.musicBg})`
-      }"
-    ></div>
+    <div class="bg"></div>
     <div class="layout">
       <div class="lyric-btn">
         <i class="iconfont icon-guanbi" @click="hide"></i>
@@ -83,7 +78,7 @@ import { findMusicLyric } from '@/api/music';
 import useSongLyric from '@/utils/useSongLyric';
 import Player from '@/components/player/index.vue';
 import { getMyUploadMusicLyric } from '@/api/user';
-import MusicVisualization from './components/musicvIsualization.vue';
+import MusicVisualization from './components/musicVisualization.vue';
 export default {
   name: 'Lyric',
   components: {
@@ -125,8 +120,7 @@ export default {
           data.scrollHeight = 32;
         } else {
           const { lrc, tlyric } = await findMusicLyric(newVal);
-
-          const { result, tResult } = useSongLyric({
+const { result, tResult } = useSongLyric({
             lyric: lrc.lyric,
             tlyric: tlyric ? tlyric.lyric : ''
           });
@@ -220,16 +214,18 @@ export default {
   width: 1440px;
   overflow: auto;
   .bg {
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    filter: brightness(50%);
+    background: linear-gradient(
+      to bottom,
+      var(--color),
+      var(--color1),
+      var(--color2)
+    );
+    filter: brightness(0.9);
     width: 100%;
     height: 100vh;
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #00f7ff;
   }
 
   .layout {
@@ -306,7 +302,7 @@ export default {
               cursor: pointer;
             }
             &.active {
-              color: hsl(184, 100%, 50%);
+              color: var(--color);
               font-size: 19px;
             }
           }

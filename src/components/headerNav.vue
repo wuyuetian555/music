@@ -121,7 +121,7 @@ export default {
     a {
       width: 40px;
       display: inline-block;
-      font-size: 17px;
+      font-size: 15px;
       color: @primaryTextColor;
       text-align: center;
       cursor: pointer;

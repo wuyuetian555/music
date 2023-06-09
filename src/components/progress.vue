@@ -93,7 +93,7 @@ export default {
 
 <style scoped lang="less">
 .music-progress {
-  background-color: rgb(255, 255, 255);
+  background-color: @primaryColor;
   border-radius: 3px;
   padding: 10px 5px;
   box-sizing: content-box;

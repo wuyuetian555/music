@@ -67,7 +67,7 @@ export default {
   color: @primaryTextColor;
 
   .songlist {
-    padding: 0 25px;
+    padding: 0 20px;
   }
 }
 </style>

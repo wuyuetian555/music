@@ -154,7 +154,7 @@ export default {
     height: auto;
     transition: all 1s;
     color: @primaryTextColor;
-    background-color: @topColor;
+    background-color: var(--color2);
     border-radius: 5px;
     overflow: hidden;
     position: absolute;

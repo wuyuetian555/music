@@ -11,28 +11,21 @@ import {
   ref,
   onDeactivated,
   onActivated,
-  computed,
-  watch
+  computed
 } from 'vue';
 import { useStore } from 'vuex';
 const store = useStore();
 const audio = store.state.musicplay.audio;
 const isStart = ref(true);
 const color = computed(() => {
-  return store.state.user.myThemeDetail;
+  return store.state.color.colors[0];
 });
-const fillColor = ref('');
-
-const theme = computed(() => {
-  return store.state.user.theme;
-});
-
 const cvs = ref();
 let ctx;
 onMounted(() => {
   ctx = cvs.value.getContext('2d');
-  cvs.value.width = 1400;
-  cvs.value.height = 150;
+  cvs.value.width = 1200;
+  cvs.value.height = 180;
 });
 let isInit = false;
 let dataArray, analyser;
@@ -62,8 +55,8 @@ const draw = () => {
 
   analyser.getByteFrequencyData(dataArray);
   const len = dataArray.length;
-  const barWidth = width / len;
-  ctx.fillStyle = fillColor.value;
+  const barWidth = (width / len) * 0.5;
+  ctx.fillStyle = color.value;
   for (let i = 0; i < len; i++) {
     const data = dataArray[i];
     const barHeight = (data / 255) * height;
@@ -83,31 +76,11 @@ onActivated(() => {
 nextTick(() => {
   draw();
 });
-watch(
-  () => theme.value,
-  (newVal) => {
-    if (newVal == 'dark') {
-      fillColor.value = 'rgb(30,30,30)';
-    } else if (newVal == 'default') {
-      fillColor.value = 'rgb(246,248,249)';
-    } else {
-      fillColor.value = color.value.topColor;
-    }
-  },
-  { immediate: true }
-);
-watch(
-  () => color.value,
-  (newVal) => {
-    fillColor.value = newVal.topColor;
-  },
-  { deep: true }
-);
 </script>
 
 <style scoped lang="less">
 .music-visualization {
-  height: 150px;
+  height: 180px;
   text-align: center;
 }
 </style>

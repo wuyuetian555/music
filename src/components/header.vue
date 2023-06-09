@@ -4,7 +4,7 @@
       <router-link to="/"><i class="iconfont icon-yinle icon"></i></router-link>
       <HeaderNav class="header-nav"></HeaderNav>
     </div>
-
+    <Weather></Weather>
     <div class="header-right">
       <SearchInput></SearchInput>
       <div class="user">
@@ -53,9 +53,11 @@ import SearchInput from '@/components/searchinput.vue';
 import { ref, computed, onBeforeMount } from 'vue';
 import Login from '@/components/login/index.vue';
 import { useStore } from 'vuex';
+
+import Weather from './weather.vue';
 export default {
   name: 'Header',
-  components: { HeaderNav, SearchInput, Login },
+  components: { HeaderNav, SearchInput, Login, Weather },
   setup() {
     const show = ref(false);
     const store = useStore();

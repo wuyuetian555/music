@@ -1,7 +1,8 @@
 import { themes } from '@/theme/model';
 import { changeStyle } from '@/theme/theme';
-import { login } from '@/api/user';
+import { login, musicListUploadRequest, getMusicListRequest } from '@/api/user';
 import { ElMessage } from 'element-plus';
+
 export default {
   namespaced: true,
   state() {
@@ -40,7 +41,8 @@ export default {
         token: localStorage.getItem('userinfo')
           ? JSON.parse(localStorage.getItem('userinfo')).token
           : null
-      }
+      },
+      timer: null
     };
   },
   getters: {
@@ -55,12 +57,44 @@ export default {
     }
   },
   actions: {
-    getPlayedMusic({ commit, rootState }) {
+    async getMusicList({ state }) {
+      const { data } = await getMusicListRequest({
+        user: state.userinfo.email
+      });
+      const newArr = [...state.playedMusic, ...data];
+      const obj = {};
+      newArr.forEach((item) => {
+        const musicId = item.musicId;
+        if (!obj[musicId]) {
+          obj[musicId] = item;
+        }
+      });
+      localStorage.setItem('playedMusic', JSON.stringify(Object.values(obj)));
+      state.playedMusic = Object.values(obj);
+    },
+    startTimer({ state, dispatch, commit }) {
+      clearTimeout(state.timer);
+      const timer = setTimeout(() => {
+        dispatch('saveSongListToDatabase');
+      }, 3000);
+
+      commit('setTimer', timer);
+    },
+    async saveSongListToDatabase({ state }) {
+      await musicListUploadRequest({
+        user: state.userinfo.email,
+        musicList: JSON.stringify(state.playedMusic)
+      });
+    },
+    getPlayedMusic({ commit, rootState, dispatch, state }) {
       const musicList = rootState.musicplay.musicList.data;
       const song = musicList.data[musicList.index];
       commit('savePlayedMusic', { song });
+      if (state.userinfo.email) {
+        dispatch('startTimer');
+      }
     },
-    async requestLogin({ state }, { email, password }) {
+    async requestLogin({ state, dispatch }, { email, password }) {
       const { status, token } = await login({ email, password });
       if (status == 200) {
         state.userinfo.email = email;
@@ -70,15 +104,20 @@ export default {
           message: `Hi,欢迎回来${email}用户`,
           type: 'success'
         });
+        dispatch('getMusicList');
       } else {
         ElMessage({
           message: '邮箱或密码错误',
           type: 'error'
         });
       }
-    }
+    },
+    async musicListUpload() {}
   },
   mutations: {
+    setTimer(state, timer) {
+      state.timer = timer;
+    },
     addMyLike(state, { song }) {
       state.mylike.push(song);
       localStorage.setItem('mylikesong', JSON.stringify(state.mylike));

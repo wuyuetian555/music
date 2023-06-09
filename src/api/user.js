@@ -38,3 +38,11 @@ export const getMusicFileBlob = ({ url }) => {
 export const getUserUploadMusicRequest = () => {
   return request('/users/getUserUploadMusic', 'get');
 };
+
+export const musicListUploadRequest = ({ user, musicList }) => {
+  return request('/musicListUpload', 'post', { user, musicList });
+};
+
+export const getMusicListRequest = ({ user }) => {
+  return request('/getMusicList', 'get', { user });
+};

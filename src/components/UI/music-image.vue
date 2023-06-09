@@ -1,6 +1,12 @@
 <template>
-  <img :src="src" alt="图片无法加载" v-if="src" />
-  <img src="@/assets/images/musicBg.png" v-else />
+  <img
+    :src="src + '?param=250y250'"
+    alt="图片无法加载"
+    v-show="src"
+    crossorigin
+    class="img"
+  />
+  <img src="@/assets/images/musicBg.png" v-show="!src" />
 </template>
 
 <script>
@@ -12,7 +18,7 @@ export default {
   props: {
     src: { default: '' }
   },
-  setup(props) {
+  setup() {
     const store = useStore();
     const musicInfo = store.getters['musicplay/getPlayingMusic'];
     watch(
