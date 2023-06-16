@@ -48,8 +48,8 @@ import { useStore } from 'vuex';
 const labelPosition = ref('right');
 const ruleFormRef = ref();
 const formLabelAlign = reactive({
-  user: '',
-  password: ''
+  user: 'thmayday555@proton.me',
+  password: '1210875592th'
 });
 
 const props = defineProps({
