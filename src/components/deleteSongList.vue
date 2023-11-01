@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue';
+import { ref, watch } from 'vue'
 export default {
   name: 'DeleteList',
   emit: ['backAction', 'deletSongList'],
@@ -67,49 +67,49 @@ export default {
   },
 
   setup(props, { emit }) {
-    const isAllDelete = ref(false);
-    const data = ref(JSON.parse(JSON.stringify(props.musicListData)));
+    const isAllDelete = ref(false)
+    const data = ref(JSON.parse(JSON.stringify(props.musicListData)))
     const handleAllDelete = () => {
-      isAllDelete.value = !isAllDelete.value;
+      isAllDelete.value = !isAllDelete.value
       if (isAllDelete.value) {
         data.value.forEach((item) => {
-          item.delete = true;
-        });
+          item.delete = true
+        })
       } else {
         data.value.forEach((item) => {
-          item.delete = false;
-        });
+          item.delete = false
+        })
       }
-    };
+    }
     const handleClick = (item) => {
-      item.delete = !item.delete;
-    };
+      item.delete = !item.delete
+    }
     const deleteList = () => {
       const newData = data.value.filter((item) => {
-        return !item.delete;
-      });
-      if (newData.length == data.value.length) return;
+        return !item.delete
+      })
+      if (newData.length == data.value.length) return
       if (newData.length == 0) {
-        emit('deletSongList', newData);
-        emit('backAction');
+        emit('deletSongList', newData)
+        emit('backAction')
       } else {
-        data.value = newData;
-        emit('deletSongList', newData);
+        data.value = newData
+        emit('deletSongList', newData)
       }
-    };
+    }
     watch(data.value, (newVal) => {
-      let show = false;
+      let show = false
       for (let index = 0; index < newVal.length; index++) {
         if (!newVal[index].delete) {
-          show = true;
-          break;
+          show = true
+          break
         }
       }
-      isAllDelete.value = show || true;
-    });
-    return { isAllDelete, handleAllDelete, handleClick, data, deleteList };
+      isAllDelete.value = show || true
+    })
+    return { isAllDelete, handleAllDelete, handleClick, data, deleteList }
   }
-};
+}
 </script>
 
 <style scoped lang="less">

@@ -1,9 +1,15 @@
 {
-  "semi": true,
+  "semi": false,
   "trailingComma": "none",
   "singleQuote": true,
   "tabWidth": 2,
   "arrowParens": "always",
-  "object-curly-spacing": ["error", "always"],
-  "space-before-function-paren": ["error", "always"]
+  "object-curly-spacing": [
+    "error",
+    "always"
+  ],
+  "space-before-function-paren": [
+    "error",
+    "always"
+  ]
 }
